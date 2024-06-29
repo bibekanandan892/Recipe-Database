@@ -75,7 +75,7 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .padding(innerPadding)) {
                         SetupNavGraph(
-                            startDestination = Destination.Home.route,
+                            startDestination = Destination.Home.name,
                             navController = navGraphController,
 
                             )

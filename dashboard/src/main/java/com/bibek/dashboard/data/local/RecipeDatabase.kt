@@ -1,9 +1,8 @@
-package com.bibek.core.room
+package com.bibek.dashboard.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.bibek.core.room.dao.RecipeDao
-import com.bibek.core.room.model.Recipe
+import com.bibek.dashboard.data.model.scarch.res.Recipe
 
 
 @Database(entities = [Recipe::class], version = 1, exportSchema = false)

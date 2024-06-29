@@ -1,8 +1,13 @@
 package com.bibek.core.di
 
+import android.content.Context
+import com.bibek.core.utils.connectivity.ConnectivityObserver
+import com.bibek.core.utils.connectivity.ConnectivityObserverImpl
+import com.bibek.core.utils.connectivity.connectivityManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -58,5 +63,11 @@ object KtorModule {
                 level = LogLevel.ALL
             }
         }
+    }
+
+    @Singleton
+    @Provides
+    fun provideConnectivityObserver(@ApplicationContext context: Context): ConnectivityObserver {
+        return ConnectivityObserverImpl(context.connectivityManager)
     }
 }
