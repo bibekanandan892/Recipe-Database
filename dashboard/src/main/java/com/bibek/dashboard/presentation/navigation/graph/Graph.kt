@@ -13,7 +13,6 @@ import com.bibek.core.utils.Destination
 import com.bibek.dashboard.presentation.ui.home.HomeScreen
 import com.bibek.dashboard.presentation.ui.home.HomeViewModel
 import com.bibek.dashboard.presentation.ui.recipe_details.RecipeDetailsScreen
-import androidx.paging.compose.collectAsLazyPagingItems
 
 /**
  * Author: Bibekananda Nayak
@@ -22,14 +21,14 @@ import androidx.paging.compose.collectAsLazyPagingItems
  */
 fun NavGraphBuilder.dashboardGraph() {
 
-    composable(route = Destination.Home.name) {
+    composable(route = Destination.HOME.name) {
         val homeViewModel : HomeViewModel = hiltViewModel()
         val uiState  by homeViewModel.uiState.collectAsState()
         HomeScreen(uiState,homeViewModel::onEvent)
     }
 
     composable(
-        route = Destination.RecipeDetails.name
+        route = Destination.RECIPE_DETAILS.name
     ) {
         RecipeDetailsScreen()
     }

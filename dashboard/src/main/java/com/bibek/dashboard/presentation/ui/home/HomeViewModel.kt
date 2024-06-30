@@ -1,7 +1,6 @@
 package com.bibek.dashboard.presentation.ui.home
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.bibek.core.utils.Navigator
 import com.bibek.core.utils.Toaster
@@ -10,14 +9,11 @@ import com.bibek.dashboard.domain.usecase.SearchRecipeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import androidx.paging.PagingData
 import com.bibek.core.utils.Destination
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 
 
 @HiltViewModel
@@ -37,7 +33,7 @@ class HomeViewModel @Inject constructor(
 //        getRecipe()
         viewModelScope.launch(Dispatchers.IO) {
             delay(5000)
-            navigator.navigate(Destination.RecipeDetails.name)
+            navigator.navigate(Destination.RECIPE_DETAILS.name)
             delay(2000)
             toaster.error("error")
             delay(1000)

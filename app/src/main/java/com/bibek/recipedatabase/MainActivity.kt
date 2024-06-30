@@ -20,9 +20,7 @@ import com.bibek.core.utils.Toaster
 import com.bibek.recipedatabase.navigation.SetupNavGraph
 import com.bibek.recipedatabase.ui.theme.RecipeDatabaseTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -51,7 +49,7 @@ class MainActivity : ComponentActivity() {
                             .padding(innerPadding)
                     ) {
                         SetupNavGraph(
-                            startDestination = Destination.Home.name,
+                            startDestination = Destination.HOME.name,
                             navController = navGraphController
                             )
                     }

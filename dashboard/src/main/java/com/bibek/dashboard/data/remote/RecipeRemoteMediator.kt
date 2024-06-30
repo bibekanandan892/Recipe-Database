@@ -4,8 +4,6 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import androidx.room.withTransaction
-import com.bibek.core.utils.NetworkResult
 import com.bibek.core.utils.collectResponse
 import com.bibek.core.utils.handleResponse
 import com.bibek.dashboard.BuildConfig
@@ -14,14 +12,9 @@ import com.bibek.dashboard.data.model.scarch.res.Recipe
 import com.bibek.dashboard.data.model.scarch.res.RecipeSearchResponse
 import com.bibek.dashboard.utils.Constants.PAGE_SIZE
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.flow.Flow
-import org.apache.http.HttpException
-import java.io.IOException
-import kotlin.jvm.functions.FunctionN
 
 @OptIn(ExperimentalPagingApi::class)
 class RecipeRemoteMediator(
