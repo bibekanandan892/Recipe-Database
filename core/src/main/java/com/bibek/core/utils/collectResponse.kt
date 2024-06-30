@@ -4,11 +4,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-fun <T> Flow<NetworkResult<T>>.collectResponse(
+inline fun <T> Flow<NetworkResult<T>>.collectResponse(
     scope: CoroutineScope,
-    onSuccess: suspend (T?) -> Unit = {},
-    onError: suspend (String) -> Unit = {},
-    onLoading: suspend (Boolean) -> Unit = {}
+    crossinline onSuccess: suspend (T?) -> Unit = {},
+    crossinline onError: suspend (String) -> Unit = {},
+    crossinline onLoading: suspend (Boolean) -> Unit = {}
 ) {
     scope.launch {
         collect{networkResult->
@@ -20,4 +20,20 @@ fun <T> Flow<NetworkResult<T>>.collectResponse(
             }
         }
     }
+}
+
+suspend inline fun <T> Flow<NetworkResult<T>>.collectResponse(
+     crossinline onSuccess: suspend (T?) -> Unit ,
+     crossinline onError: suspend (String) -> Unit,
+     crossinline onLoading: suspend (Boolean) -> Unit
+)  {
+        collect{networkResult->
+            onLoading(false)
+            when(networkResult){
+                is NetworkResult.Error -> onError(networkResult.message?:"Unknown Error")
+                is NetworkResult.Loading -> onLoading(true)
+                is NetworkResult.Success ->  { onSuccess(networkResult.data) }
+            }
+        }
+
 }
