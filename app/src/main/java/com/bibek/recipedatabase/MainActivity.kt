@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.bibek.core.utils.Destination
 import com.bibek.core.utils.Navigator
@@ -25,6 +27,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+
     @Inject
     lateinit var navigator: Navigator
 
@@ -37,51 +41,58 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navGraphController = rememberNavController()
-            LaunchedEffect(Unit) {
-                withContext(Dispatchers.Main.immediate) {
-                    navigator.actions.collectLatest { action ->
-                        when (action) {
-                            Navigator.Action.Back -> {
-                                navGraphController.popBackStack()
-                            }
-
-                            is Navigator.Action.Navigate -> {
-                                navGraphController.navigate(
-                                    route = action.destination, builder = action.navOptions
-                                )
-
-                            }
-                        }
-                    }
-                }
-            }
-            LaunchedEffect(key1 = true) {
-                withContext(Dispatchers.Main.immediate) {
-                    toaster.errorFlow.collect {
-                        Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-            LaunchedEffect(key1 = true) {
-                withContext(Dispatchers.Main.immediate) {
-                    toaster.successFlow.collectLatest {
-                        Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
+            NavigationSetup(navGraphController)
+            ToasterSetup()
             RecipeDatabaseTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                    ) {
                         SetupNavGraph(
                             startDestination = Destination.Home.name,
-                            navController = navGraphController,
-
+                            navController = navGraphController
                             )
                     }
 
                 }
+            }
+        }
+    }
+
+    @Composable
+    private fun ToasterSetup() {
+        LaunchedEffect(key1 = true) {
+            toaster.errorFlow.collect {
+                Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
+            }
+
+        }
+        LaunchedEffect(key1 = true) {
+            toaster.successFlow.collectLatest {
+                Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    @Composable
+    private fun NavigationSetup(navGraphController: NavHostController) {
+        LaunchedEffect(key1 = true) {
+            navigator.actions.collectLatest { action ->
+                when (action) {
+                    Navigator.Action.Back -> {
+                        navGraphController.popBackStack()
+                    }
+
+                    is Navigator.Action.Navigate -> {
+                        navGraphController.navigate(
+                            route = action.destination, builder = action.navOptions
+                        )
+
+                    }
+                }
+
             }
         }
     }

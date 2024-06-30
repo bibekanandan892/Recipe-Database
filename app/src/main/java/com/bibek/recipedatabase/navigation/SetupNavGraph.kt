@@ -16,7 +16,7 @@ fun SetupNavGraph(
         navController = navController,
         startDestination = startDestination,
     ) {
-        dashboardGraph(navController)
+        dashboardGraph()
     }
 }
 

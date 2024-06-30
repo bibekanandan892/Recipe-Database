@@ -9,7 +9,6 @@ data class  HomeState(
     val isLoading: Boolean = false,
     val recipeList : List<Recipe> = listOf(),
     val query: String = "",
-    val recipePager : Flow<PagingData<Recipe>>
 )
 
 sealed interface HomeEvent{

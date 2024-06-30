@@ -1,9 +1,9 @@
-package com.bibek.dashboard.di
+package com.bibek.recipedatabase.di
 
 import android.content.Context
 import androidx.room.Room
 import com.bibek.dashboard.data.local.RecipeDao
-import com.bibek.dashboard.data.local.RecipeDatabase
+import com.bibek.recipedatabase.data.local.RecipeDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

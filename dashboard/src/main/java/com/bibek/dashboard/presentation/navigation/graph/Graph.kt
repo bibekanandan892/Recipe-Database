@@ -20,10 +20,9 @@ import androidx.paging.compose.collectAsLazyPagingItems
  *
  * Date: 01-05-2024
  */
-fun NavGraphBuilder.dashboardGraph(navController: NavHostController) {
+fun NavGraphBuilder.dashboardGraph() {
 
     composable(route = Destination.Home.name) {
-
         val homeViewModel : HomeViewModel = hiltViewModel()
         val uiState  by homeViewModel.uiState.collectAsState()
         HomeScreen(uiState,homeViewModel::onEvent)

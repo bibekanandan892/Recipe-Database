@@ -4,7 +4,6 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("org.jetbrains.kotlin.plugin.serialization")
-
     id("com.google.devtools.ksp")
 }
 
@@ -29,6 +28,14 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField(
+                "String", "SEARCH_URL", "\"https://api.spoonacular.com/recipes/complexSearch\""
+            )
+        }
+        debug {
+            buildConfigField(
+                "String", "SEARCH_URL", "\"https://api.spoonacular.com/recipes/complexSearch\""
+            )
         }
     }
     compileOptions {
@@ -40,6 +47,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = ProjectConfig.kotlinCompilerExtensionVersion

@@ -40,51 +40,20 @@ inline fun <reified T> handleResponse(crossinline call: suspend () -> HttpRespon
         try {
             val response = call.invoke().body<T>()
             emit(NetworkResult.Success(response))
-        } catch (e: ClientRequestException) {
-            val errorMessage = getErrorDes(errorString = e.response.body())
-            if (errorMessage != null) {
-                emit(NetworkResult.Error(errorMessage))
-            } else {
-                emit(NetworkResult.Error(e.response.status.description))
-            }
-        } catch (e: ServerResponseException) {
-
-            val errorMessage = getErrorDes(errorString = e.response.body())
-            if (errorMessage != null) {
-                emit(NetworkResult.Error(errorMessage))
-            } else {
-                emit(NetworkResult.Error(e.response.status.description))
-            }
-        } catch (e: RedirectResponseException) {
-
-            val errorMessage = getErrorDes(errorString = e.response.body())
-            if (errorMessage != null) {
-                emit(NetworkResult.Error(errorMessage))
-            } else {
-                emit(NetworkResult.Error(e.response.status.description))
-            }
         } catch (e: ResponseException) {
             val errorMessage = getErrorDes(errorString = e.response.body())
-            if (errorMessage != null) {
-                emit(NetworkResult.Error(errorMessage))
-            } else {
-                emit(NetworkResult.Error(e.response.status.description))
-            }
+            emit(NetworkResult.Error(errorMessage ?: e.response.status.description))
         } catch (e: ConnectTimeoutException) {
-
             emit(NetworkResult.Error("Connection Timeout"))
         } catch (e: SocketTimeoutException) {
             emit(NetworkResult.Error("Socket Timeout"))
         } catch (e: IOException) {
-
             emit(NetworkResult.Error(e.message ?: "Unknown IO Error"))
         } catch (e: Exception) {
-
             emit(NetworkResult.Error(e.message ?: "Unknown Error"))
         }
     }
 }
-
 
 
 fun getErrorDes(

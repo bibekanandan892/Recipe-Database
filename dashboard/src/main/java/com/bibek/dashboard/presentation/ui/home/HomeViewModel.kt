@@ -14,6 +14,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.paging.PagingData
+import com.bibek.core.utils.Destination
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
 
@@ -25,13 +28,22 @@ class HomeViewModel @Inject constructor(
     private val connectivityObserver: ConnectivityObserver
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(HomeState(recipePager = searchRecipeUseCase.invoke("","","","")))
+    private val _uiState = MutableStateFlow(HomeState())
     val uiState get() = _uiState.asStateFlow()
 
 
     init {
 //        viewModelScope.launch { getSearchRecipe() }
 //        getRecipe()
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(5000)
+            navigator.navigate(Destination.RecipeDetails.name)
+            delay(2000)
+            toaster.error("error")
+            delay(1000)
+            navigator.back()
+
+        }
     }
 
     private fun getRecipe(query: String = "") {

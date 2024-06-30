@@ -5,7 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.bibek.core.utils.connectivity.ConnectivityObserver
-import com.bibek.dashboard.data.local.RecipeDatabase
+import com.bibek.dashboard.data.local.RecipeDao
 import com.bibek.dashboard.data.model.scarch.res.Recipe
 import com.bibek.dashboard.data.remote.RecipeRemoteMediator
 import com.bibek.dashboard.data.repository.RecipeRepositoryImpl
@@ -27,10 +27,9 @@ object DashboardModule {
     @Provides
     fun provideRecipeRepository(
         httpClient: HttpClient,
-        connectivityObserver: ConnectivityObserver,
-        recipeDatabase: RecipeDatabase
+        recipeDao: RecipeDao
     ): RecipeRepository =
-        RecipeRepositoryImpl(httpClient, connectivityObserver, recipeDatabase)
+        RecipeRepositoryImpl(httpClient = httpClient,recipeDao  = recipeDao)
 
 
 }
