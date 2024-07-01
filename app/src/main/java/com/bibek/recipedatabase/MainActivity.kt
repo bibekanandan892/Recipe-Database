@@ -50,8 +50,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         SetupNavGraph(
                             startDestination = Destination.HOME.name,
-                            navController = navGraphController
-                            )
+                            navController = navGraphController  )
                     }
 
                 }

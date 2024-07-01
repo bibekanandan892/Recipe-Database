@@ -4,8 +4,8 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.bibek.core.utils.collectResponse
-import com.bibek.core.utils.handleResponse
+import com.bibek.core.utils.network.collectResponse
+import com.bibek.core.utils.network.handleResponse
 import com.bibek.dashboard.BuildConfig
 import com.bibek.dashboard.data.local.RecipeDao
 import com.bibek.dashboard.data.model.scarch.res.Recipe

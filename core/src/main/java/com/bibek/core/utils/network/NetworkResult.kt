@@ -1,4 +1,4 @@
-package com.bibek.core.utils
+package com.bibek.core.utils.network
 
 /**
 Author: Bibekananda Nayak

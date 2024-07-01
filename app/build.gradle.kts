@@ -19,7 +19,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.bibek.recipedatabase.AppTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -67,7 +67,9 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(project(":core"))
     implementation(project(":dashboard"))
+    implementation(libs.androidx.runner)
     testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -79,6 +81,14 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
+    androidTestImplementation(libs.hilt.android.testing)
+    debugImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.android.compiler)
+
+    //turbine
+
+    androidTestImplementation(libs.turbine)
+
 
     //retrofit
     implementation(libs.okkhttp)
@@ -109,4 +119,6 @@ dependencies {
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.room.paging)
+    androidTestImplementation( "androidx.room:room-testing:2.6.1")
+
 }

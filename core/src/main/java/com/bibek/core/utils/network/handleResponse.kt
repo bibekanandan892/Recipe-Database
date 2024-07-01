@@ -1,17 +1,12 @@
-package com.bibek.core.utils
+package com.bibek.core.utils.network
 
 import io.ktor.client.call.body
 import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.network.sockets.SocketTimeoutException
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.RedirectResponseException
 import io.ktor.client.plugins.ResponseException
-import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.statement.HttpResponse
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.io.IOException
 
@@ -50,7 +45,7 @@ inline fun <reified T> handleResponse(crossinline call: suspend () -> HttpRespon
         } catch (e: IOException) {
             emit(NetworkResult.Error(e.message ?: "Unknown IO Error"))
         } catch (e: Exception) {
-            emit(NetworkResult.Error(e.message ?: "Unknown Error"))
+            emit(NetworkResult.Error(e.message ?: "Something went wrong"))
         }
     }
 }
