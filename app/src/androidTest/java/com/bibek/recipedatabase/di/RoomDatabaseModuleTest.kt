@@ -6,25 +6,27 @@ import com.bibek.dashboard.data.local.RecipeDao
 import com.bibek.recipedatabase.data.local.RecipeDatabase
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dagger.hilt.testing.TestInstallIn
 import javax.inject.Singleton
 
-
-@InstallIn(SingletonComponent::class)
 @Module
-object RoomDatabaseModule {
+@TestInstallIn(
+    components = [SingletonComponent::class],
+    replaces = [RoomDatabaseModule::class]
+)
+object RoomDatabaseModuleTest {
+
 
     @Singleton
     @Provides
     fun provideRoomDataBase(@ApplicationContext context: Context): RecipeDatabase =
-        Room.databaseBuilder(
+        Room.inMemoryDatabaseBuilder(
             context.applicationContext,
             RecipeDatabase::class.java,
-            "RECIPE_DATABASE"
         )
-            .fallbackToDestructiveMigration()
+            .allowMainThreadQueries()
             .build()
 
     @Singleton

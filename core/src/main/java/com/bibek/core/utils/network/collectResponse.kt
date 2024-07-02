@@ -1,4 +1,4 @@
-package com.bibek.core.utils
+package com.bibek.core.utils.network
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +11,7 @@ inline fun <T> Flow<NetworkResult<T>>.collectResponse(
     crossinline onLoading: suspend (Boolean) -> Unit = {}
 ) {
     scope.launch {
-        collect{networkResult->
+        collect{ networkResult->
             onLoading(false)
             when(networkResult){
                 is NetworkResult.Error -> onError(networkResult.message?:"Unknown Error")

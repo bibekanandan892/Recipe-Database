@@ -22,7 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
-import com.bibek.core.utils.checkNull
 import com.bibek.dashboard.data.model.scarch.res.Recipe
 
 @ExperimentalAnimationApi
@@ -78,7 +77,7 @@ fun RecipeRow(
                     Color.Black.copy(alpha = 0.7f),Color.Transparent), startY = Float.POSITIVE_INFINITY, endY = 0.5f), shape = RoundedCornerShape(15.dp)
                 ))
                 Text(
-                    text = "Name : ${recipe.title.checkNull().take(20)}...",
+                    text = "Name : ${recipe.title?.take(20)}...",
                     style = MaterialTheme.typography.labelLarge,
                     color = Color.White
                     , modifier = Modifier.padding(10.dp)

@@ -11,7 +11,7 @@ package com.bibek.core.utils
  *
  */
 enum class Destination{
-    Home ,
-    RecipeDetails,
-    AddRecipe
+    HOME,
+    RECIPE_DETAILS,
+    ADD_RECIPE
 }
