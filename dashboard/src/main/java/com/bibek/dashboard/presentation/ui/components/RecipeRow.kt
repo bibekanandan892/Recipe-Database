@@ -18,38 +18,30 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
-import com.bibek.dashboard.data.model.scarch.res.Recipe
+import com.bibek.dashboard.R
+import com.bibek.dashboard.domain.model.search.response.Recipe
 
 @ExperimentalAnimationApi
 @Composable
-@Preview
 fun RecipeRow(
-    recipe: Recipe = Recipe(
-        title = "",
-        image = "https://img.spoonacular.com/recipes/715415-312x231.jpg"
-    ),
+    recipe: Recipe,
     onItemClick: (Int) -> Unit = {}
 ) {
-
     val painter = rememberAsyncImagePainter(recipe.image)
-
     Card(
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
             .height(240.dp)
-            //.height(130.dp)
             .clickable {
-                recipe.id?.let { onItemClick(it) }
+                 onItemClick(recipe.id)
             },
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
     ) {
-
-
         Column(
             modifier = Modifier
                 .padding(4.dp)
@@ -59,13 +51,12 @@ fun RecipeRow(
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomStart,){
                 Image(
                     painter = painter,
-                    contentDescription = "Recipe Image",
+                    contentDescription = stringResource(R.string.recipe_image),
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(15.dp)),
                     contentScale = ContentScale.Crop
                 )
-
                 if (painter.state is AsyncImagePainter.State.Loading) {
                     Box(modifier = Modifier
                         .height(190.dp)
@@ -73,23 +64,22 @@ fun RecipeRow(
                         CircularProgressIndicator(color = MaterialTheme.colorScheme.onBackground)
                     }
                 }
-                Box(modifier = Modifier.fillMaxSize().background(brush = Brush.verticalGradient(colors = listOf(
-                    Color.Black.copy(alpha = 0.7f),Color.Transparent), startY = Float.POSITIVE_INFINITY, endY = 0.5f), shape = RoundedCornerShape(15.dp)
-                ))
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Black.copy(alpha = 0.7f), Color.Transparent
+                            ), startY = Float.POSITIVE_INFINITY, endY = 0.5f
+                        ), shape = RoundedCornerShape(15.dp)
+                    ))
                 Text(
-                    text = "Name : ${recipe.title?.take(20)}...",
+                    text = recipe.title,
                     style = MaterialTheme.typography.labelLarge,
                     color = Color.White
                     , modifier = Modifier.padding(10.dp)
                 )
-
             }
-
-
         }
-
-
     }
-
-
 }

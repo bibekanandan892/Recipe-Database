@@ -1,7 +1,7 @@
 package com.bibek.dashboard.domain.repository
 
 import androidx.paging.PagingData
-import com.bibek.dashboard.data.model.scarch.res.Recipe
+import com.bibek.dashboard.domain.model.search.response.Recipe
 import kotlinx.coroutines.flow.Flow
 
 interface RecipeRepository {

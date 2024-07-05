@@ -9,10 +9,9 @@ plugins {
 
 android {
     namespace = "com.bibek.setting"
-    compileSdk = ProjectConfig.compileSdk
-
+    compileSdk = ProjectConfig.COMPILE_SDK
     defaultConfig {
-        minSdk = ProjectConfig.minSdk
+        minSdk = ProjectConfig.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -20,7 +19,6 @@ android {
             useSupportLibrary = true
         }
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -31,17 +29,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = ProjectConfig.javaVersion
-        targetCompatibility = ProjectConfig.javaVersion
+        sourceCompatibility = ProjectConfig.JAVA_VERSION
+        targetCompatibility = ProjectConfig.JAVA_VERSION
     }
     kotlinOptions {
-        jvmTarget = ProjectConfig.jvmTarget
+        jvmTarget = ProjectConfig.JVM_TARGET
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = ProjectConfig.kotlinCompilerExtensionVersion
+        kotlinCompilerExtensionVersion = ProjectConfig.KOTLIN_COMPILER_EXTENSION_VERSION
     }
     packaging {
         resources {
@@ -52,7 +50,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -70,7 +67,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
     // Dagger Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

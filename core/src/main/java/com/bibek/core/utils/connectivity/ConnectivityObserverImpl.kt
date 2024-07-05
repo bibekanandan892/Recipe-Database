@@ -10,5 +10,4 @@ class ConnectivityObserverImpl(
         get() = connectivityManager.observeConnectivityAsFlow()
     override val currentConnectionState: ConnectionState
         get() = connectivityManager.currentConnectivityState
-
 }

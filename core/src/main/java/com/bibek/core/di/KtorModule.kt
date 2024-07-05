@@ -1,6 +1,8 @@
 package com.bibek.core.di
 
 import android.content.Context
+import com.bibek.core.BuildConfig
+import com.bibek.core.utils.NetworkLogger
 import com.bibek.core.utils.connectivity.ConnectivityObserver
 import com.bibek.core.utils.connectivity.ConnectivityObserverImpl
 import com.bibek.core.utils.connectivity.connectivityManager
@@ -14,9 +16,7 @@ import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.plugins.logging.ANDROID
 import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.accept
 import io.ktor.client.request.header
@@ -28,18 +28,9 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object KtorModule {
-    /**
-     * Provides a singleton instance of HttpClient for making network requests.
-     * @return An instance of HttpClient configured with necessary settings.
-     *
-     * @author Bibekananda
-     */
     @Singleton
     @Provides
     fun provideHttpClient(): HttpClient {
-
-
-        // Configure and return HttpClient instance
         return HttpClient(OkHttp) {
             install(ContentNegotiation) {
                 json(contentType = ContentType.Application.Json)
@@ -56,15 +47,14 @@ object KtorModule {
                 contentType(ContentType.Application.Json)
                 accept(ContentType.Application.Json)
                 accept(ContentType.Text.Plain)
-                header("x-api-key","dd04b71f9ee94ba79f0fc7d0e6918653")
+                header("x-api-key",BuildConfig.API_KEY)
             }
             install(Logging) {
-                logger = Logger.ANDROID
+                logger = NetworkLogger()
                 level = LogLevel.ALL
             }
         }
     }
-
     @Singleton
     @Provides
     fun provideConnectivityObserver(@ApplicationContext context: Context): ConnectivityObserver {

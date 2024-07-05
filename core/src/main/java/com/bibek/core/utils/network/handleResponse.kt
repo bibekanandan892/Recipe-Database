@@ -10,25 +10,6 @@ import kotlinx.coroutines.flow.flow
 import org.json.JSONObject
 import java.io.IOException
 
-/**
-Author: Bibekananda Nayak
-Date: 2024-02-21
-Description: This function handles network responses asynchronously using Kotlin Flow.
-It accepts a suspending lambda function 'call' that makes the network request and returns an HTTP response.
-The function emits a sequence of NetworkResult<T> objects representing the loading state,
-success state with the response body of type T,
-or various error states depending on the encountered exceptions during the network call.
-
-The 'handleResponse' function emits a loading state, then invokes the provided 'call' lambda to make the network request.
-It catches various exceptions that may occur during the network call, such as ClientRequestException, ServerResponseException,
-RedirectResponseException, ResponseException, ConnectTimeoutException, SocketTimeoutException, IOException, and other general exceptions.
-Depending on the type of exception caught, it extracts error information from the response body (if available) or uses default error messages.
-It then emits a corresponding NetworkResult.Error object with the error message.
-
-The 'getErrorDes' function is a utility function to extract error descriptions from the JSON response body. It takes a list of error keys and the error string, attempts to parse it as JSON, and iterates through the error keys to find the first matching key in the JSON object. If found, it returns the corresponding error description; otherwise, it returns a default "Unknown Error" message.
-
- */
-
 inline fun <reified T> handleResponse(crossinline call: suspend () -> HttpResponse): Flow<NetworkResult<T>> {
     return flow {
         emit(NetworkResult.Loading())
@@ -49,8 +30,6 @@ inline fun <reified T> handleResponse(crossinline call: suspend () -> HttpRespon
         }
     }
 }
-
-
 fun getErrorDes(
     errorKeys: List<String> = listOf("error_description", "message", "statusDesc"),
     errorString: String

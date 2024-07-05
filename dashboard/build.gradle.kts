@@ -9,10 +9,9 @@ plugins {
 
 android {
     namespace = "com.bibek.dashboard"
-    compileSdk = ProjectConfig.compileSdk
-
+    compileSdk = ProjectConfig.COMPILE_SDK
     defaultConfig {
-        minSdk = ProjectConfig.minSdk
+        minSdk = ProjectConfig.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -20,7 +19,6 @@ android {
             useSupportLibrary = true
         }
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -39,18 +37,18 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = ProjectConfig.javaVersion
-        targetCompatibility = ProjectConfig.javaVersion
+        sourceCompatibility = ProjectConfig.JAVA_VERSION
+        targetCompatibility = ProjectConfig.JAVA_VERSION
     }
     kotlinOptions {
-        jvmTarget = ProjectConfig.jvmTarget
+        jvmTarget = ProjectConfig.JVM_TARGET
     }
     buildFeatures {
         compose = true
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = ProjectConfig.kotlinCompilerExtensionVersion
+        kotlinCompilerExtensionVersion = ProjectConfig.KOTLIN_COMPILER_EXTENSION_VERSION
     }
     packaging {
         resources {
@@ -61,9 +59,7 @@ android {
 }
 
 dependencies {
-
     implementation(project(":core"))
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -74,7 +70,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-//    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -82,18 +77,14 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
     // Dagger Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
     androidTestImplementation(libs.hilt.android.testing)
     kaptAndroidTest(libs.hilt.android.compiler)
-
     //coil
     implementation(libs.coil)
-
-
     //ktor
     implementation(libs.ktor.core)
     implementation(libs.ktor.client.content.negotiation)
@@ -107,15 +98,14 @@ dependencies {
     implementation(libs.ktor.client.serialization)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.auth)
-
     //room
     implementation(libs.androidx.room)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.room.paging)
-
     //paging
     implementation(libs.paging.compose)
     implementation(libs.paging.runtime.ktx)
+
 }

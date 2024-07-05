@@ -13,36 +13,23 @@ val Context.connectivityManager get(): ConnectivityManager {
     return getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 }
 
-/**
- * Network Utility to observe availability or unavailability of Internet connection
- */
 fun ConnectivityManager.observeConnectivityAsFlow() = callbackFlow {
     trySend(currentConnectivityState)
-
     val callback = NetworkCallback { connectionState -> trySend(connectionState) }
-
     val networkRequest = NetworkRequest.Builder()
         .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
         .build()
-
     registerNetworkCallback(networkRequest, callback)
-
     awaitClose {
         unregisterNetworkCallback(callback)
     }
 }.distinctUntilChanged()
 
-/**
- * Network utility to get current state of internet connection
- */
 val ConnectivityManager.currentConnectivityState: ConnectionState
     get() {
-        val connected = allNetworks.any { network ->
-            getNetworkCapabilities(network)
-                ?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-                ?: false
-        }
-
+        val activeNetwork = activeNetwork
+        val networkCapabilities = getNetworkCapabilities(activeNetwork)
+        val connected = networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: false
         return if (connected) ConnectionState.Available else ConnectionState.Unavailable
     }
 
@@ -51,11 +38,9 @@ fun NetworkCallback(callback: (ConnectionState) -> Unit): ConnectivityManager.Ne
         override fun onAvailable(network: Network) {
             callback(ConnectionState.Available)
         }
-
         override fun onLost(network: Network) {
             callback(ConnectionState.Unavailable)
         }
-
         override fun onUnavailable() {
             callback(ConnectionState.Unavailable)
         }

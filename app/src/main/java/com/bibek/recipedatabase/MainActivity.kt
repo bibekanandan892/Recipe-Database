@@ -14,8 +14,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.bibek.core.utils.Destination
-import com.bibek.core.utils.Navigator
+import com.bibek.core.utils.navigation.Destination
+import com.bibek.core.utils.navigation.Navigator
 import com.bibek.core.utils.Toaster
 import com.bibek.recipedatabase.navigation.SetupNavGraph
 import com.bibek.recipedatabase.ui.theme.RecipeDatabaseTheme
@@ -25,15 +25,10 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-
     @Inject
     lateinit var navigator: Navigator
-
     @Inject
     lateinit var toaster: Toaster
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -52,19 +47,16 @@ class MainActivity : ComponentActivity() {
                             startDestination = Destination.HOME.name,
                             navController = navGraphController  )
                     }
-
                 }
             }
         }
     }
-
     @Composable
     private fun ToasterSetup() {
         LaunchedEffect(key1 = true) {
             toaster.errorFlow.collect {
                 Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
             }
-
         }
         LaunchedEffect(key1 = true) {
             toaster.successFlow.collectLatest {
@@ -72,7 +64,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
     @Composable
     private fun NavigationSetup(navGraphController: NavHostController) {
         LaunchedEffect(key1 = true) {
@@ -81,15 +72,14 @@ class MainActivity : ComponentActivity() {
                     Navigator.Action.Back -> {
                         navGraphController.popBackStack()
                     }
-
                     is Navigator.Action.Navigate -> {
-                        navGraphController.navigate(
-                            route = action.destination, builder = action.navOptions
-                        )
-
+                        if(navGraphController.currentDestination?.route != action.destination){
+                            navGraphController.navigate(
+                                route = action.destination, builder = action.navOptions
+                            )
+                        }
                     }
                 }
-
             }
         }
     }
