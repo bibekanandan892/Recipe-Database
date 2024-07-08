@@ -1,4 +1,4 @@
-package com.bibek.recipedatabase
+package com.bibek.recipedatabase.presentation
 
 import android.os.Bundle
 import android.widget.Toast
@@ -11,13 +11,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.bibek.core.utils.navigation.Destination
 import com.bibek.core.utils.navigation.Navigator
 import com.bibek.core.utils.Toaster
 import com.bibek.recipedatabase.navigation.SetupNavGraph
+import com.bibek.recipedatabase.presentation.componets.ConnectivityStatus
 import com.bibek.recipedatabase.ui.theme.RecipeDatabaseTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -34,6 +37,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navGraphController = rememberNavController()
+            val mainViewModel : MainViewModel = hiltViewModel()
+            val isConnectivityAvailable by mainViewModel.isConnectivityAvailable
             NavigationSetup(navGraphController)
             ToasterSetup()
             RecipeDatabaseTheme {
@@ -43,6 +48,9 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(innerPadding)
                     ) {
+                        isConnectivityAvailable?.let {
+                            ConnectivityStatus(it)
+                        }
                         SetupNavGraph(
                             startDestination = Destination.HOME.name,
                             navController = navGraphController  )

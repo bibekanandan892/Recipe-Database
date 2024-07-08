@@ -21,6 +21,7 @@ object RoomDatabaseModule {
             RecipeDatabase::class.java,
             "RECIPE_DATABASE"
         )
+
             .fallbackToDestructiveMigration()
             .build()
     @Singleton

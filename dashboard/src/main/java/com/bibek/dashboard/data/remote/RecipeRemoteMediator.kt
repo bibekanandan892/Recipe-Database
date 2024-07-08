@@ -10,6 +10,7 @@ import com.bibek.dashboard.BuildConfig
 import com.bibek.dashboard.data.local.RecipeDao
 import com.bibek.dashboard.data.local.model.search.RecipeEntity
 import com.bibek.dashboard.data.mapper.toRecipeEntity
+import com.bibek.dashboard.data.remote.model.query.Query
 import com.bibek.dashboard.data.remote.model.search.response.RecipeSearchDto
 import com.bibek.dashboard.utils.PAGE_SIZE
 import io.ktor.client.HttpClient
@@ -20,26 +21,29 @@ import kotlinx.coroutines.CompletableDeferred
 @OptIn(ExperimentalPagingApi::class)
 class RecipeRemoteMediator(
     private val recipeDao: RecipeDao,
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
+    private val query: Query
 ) : RemoteMediator<Int, RecipeEntity>() {
+    private var nextPage : Int = 0
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, RecipeEntity>
     ): MediatorResult {
         return try {
-            val loadKey = when (loadType) {
+             nextPage = when (loadType) {
                 LoadType.REFRESH -> 0
                 LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
-                LoadType.APPEND -> {
-                    val lastIndex = state.anchorPosition
-                    lastIndex?.plus(1)?:0
-                }
+                LoadType.APPEND ->  nextPage.plus(PAGE_SIZE)
             }
             val deferredResult = CompletableDeferred<MediatorResult>()
             handleResponse<RecipeSearchDto> {
                 httpClient.get(urlString = BuildConfig.SEARCH_URL) {
                     parameter("number", PAGE_SIZE)
-                    parameter("offset", loadKey)
+                    parameter("offset", nextPage)
+                    parameter("query", query.query)
+                    parameter("cuisine", query.cuisine)
+                    parameter("sort", query.sort)
+                    parameter("diet", query.diet)
                 }
             }.collectResponse(
                 onSuccess = { response ->

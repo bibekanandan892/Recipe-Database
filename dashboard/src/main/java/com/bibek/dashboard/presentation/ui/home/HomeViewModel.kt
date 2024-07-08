@@ -15,7 +15,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.bibek.dashboard.domain.model.search.response.Recipe
 import kotlinx.coroutines.flow.Flow
-
+import kotlinx.coroutines.flow.update
+@Suppress("unused")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val searchRecipeUseCase: SearchRecipeUseCase,
@@ -25,17 +26,23 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeState())
     val uiState get() = _uiState.asStateFlow()
-    val recipePager: Flow<PagingData<Recipe>> =
-        searchRecipeUseCase.invoke("", "", "", "")
-            .cachedIn(viewModelScope)
+    init {
+       getRecipe()
+    }
     private fun getRecipe(query: String = "") {
-        //todo
+        _uiState.update { uiState->
+            val recipePager: Flow<PagingData<Recipe>> =
+                searchRecipeUseCase.invoke(query, "", "", "")
+                    .cachedIn(viewModelScope)
+            uiState.copy(recipePager = recipePager)
+        }
     }
     fun onEvent(event: HomeEvent) {
         viewModelScope.launch {
             when(event){
                 is HomeEvent.OnQueryChange -> {
-                    //todo
+                    _uiState.update { uiState-> uiState.copy(query = event.query) }
+                    getRecipe(query = event.query)
                 }
                 HomeEvent.OnSearchClick -> {
                     //todo

@@ -1,6 +1,5 @@
 package com.bibek.dashboard.presentation.ui.home
 
-import android.widget.Toast
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,43 +13,36 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SearchBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.paging.compose.LazyPagingItems
-import com.bibek.dashboard.presentation.ui.components.RecipeRow
 import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.bibek.dashboard.domain.model.search.response.Recipe
+import com.bibek.dashboard.presentation.ui.components.RecipeRow
 
 @Composable
 fun HomeScreen(
-    recipeList: LazyPagingItems<Recipe>,
-    onEvent: (HomeEvent) -> Unit = {}
+    uiState: HomeState,
+    onEvent: (HomeEvent) -> Unit = {},
 ) {
-    HomeUI(recipeList = recipeList, onEvent)
+    val recipeList = uiState.recipePager.collectAsLazyPagingItems()
+    HomeUI(query = uiState.query,recipeList = recipeList, onEvent)
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
-fun HomeUI(recipeList: LazyPagingItems<Recipe>, onEvent: (HomeEvent) -> Unit) {
+fun HomeUI(query : String,recipeList: LazyPagingItems<Recipe>, onEvent: (HomeEvent) -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        val context = LocalContext.current
-        val loadState = recipeList.loadState
-        LaunchedEffect(key1 = loadState) {
-            if (loadState.refresh is LoadState.Error){
-                Toast.makeText(context,"Error" , Toast.LENGTH_SHORT).show()
-            }
-        }
         SearchBar(modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp),
-            query = "query",
+            query = query,
             onQueryChange = {
                 onEvent.invoke(HomeEvent.OnQueryChange(it))
             },

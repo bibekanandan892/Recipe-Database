@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "Recipe_Table")
 data class RecipeEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    val primaryKey:Int = 0,
     val id: Int? = 0,
     val image: String? = null,
     val imageType: String? = null,
