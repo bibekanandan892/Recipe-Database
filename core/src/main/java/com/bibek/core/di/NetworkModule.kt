@@ -23,6 +23,7 @@ import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import javax.inject.Singleton
 
 @Module
@@ -33,7 +34,9 @@ object NetworkModule {
     fun provideHttpClient(): HttpClient {
         return HttpClient(OkHttp) {
             install(ContentNegotiation) {
-                json(contentType = ContentType.Application.Json)
+                json(contentType = ContentType.Application.Json, json = Json {
+                    ignoreUnknownKeys = true
+                })
                 json(contentType = ContentType.Application.FormUrlEncoded)
                 json(contentType = ContentType.Text.Plain)
             }

@@ -16,12 +16,12 @@ import com.bibek.planner.ui.theme.RecipeDatabaseTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge()//?
         setContent {
             RecipeDatabaseTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = "Anssdroid",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

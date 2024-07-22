@@ -46,20 +46,14 @@ fun ConnectivityStatus(connectionState: ConnectionState) {
                 false
             }
 
-            ConnectionState.Unavailable -> {
-                true
-            }
+            ConnectionState.Unavailable -> true
         }
     }
 }
 
 @Composable
 fun ConnectivityStatusBox(connectionState: ConnectionState) {
-    val isConnected = if (connectionState is ConnectionState.Available) {
-        Color.Green
-    } else {
-        Color.Red
-    }
+    val isConnected = if (connectionState is ConnectionState.Available) Color.Green else Color.Red
     val backgroundColor by animateColorAsState(isConnected)
     val message = when (connectionState) {
         ConnectionState.Available -> {
@@ -87,7 +81,10 @@ fun ConnectivityStatusBox(connectionState: ConnectionState) {
         contentAlignment = Alignment.Center
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(painterResource(id = iconResource), "Connectivity Icon", tint = Color.White)
+            Icon(
+                painterResource(id = iconResource),
+                "Connectivity Icon", tint = Color.White
+            )
             Spacer(modifier = Modifier.size(8.dp))
             Text(message, color = Color.White, fontSize = 15.sp)
         }
