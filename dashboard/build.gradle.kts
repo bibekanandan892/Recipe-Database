@@ -12,7 +12,6 @@ android {
     compileSdk = ProjectConfig.COMPILE_SDK
     defaultConfig {
         minSdk = ProjectConfig.MIN_SDK
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
         vectorDrawables {
@@ -29,12 +28,19 @@ android {
             buildConfigField(
                 "String", "SEARCH_URL", "\"https://api.spoonacular.com/recipes/complexSearch\""
             )
+            buildConfigField(
+                "String", "GET_RECIPE", "\"https://api.spoonacular.com/recipes/\""
+            )
         }
         debug {
             buildConfigField(
                 "String", "SEARCH_URL", "\"https://api.spoonacular.com/recipes/complexSearch\""
             )
+            buildConfigField(
+                "String", "GET_RECIPE", "\"https://api.spoonacular.com/recipes/\""
+            )
         }
+
     }
     compileOptions {
         sourceCompatibility = ProjectConfig.JAVA_VERSION

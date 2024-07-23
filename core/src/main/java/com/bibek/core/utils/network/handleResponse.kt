@@ -21,12 +21,16 @@ inline fun <reified T> handleResponse(crossinline call: suspend () -> HttpRespon
             emit(NetworkResult.Error(errorMessage ?: e.response.status.description))
         } catch (e: ConnectTimeoutException) {
             emit(NetworkResult.Error("Connection Timeout"))
+            e.printStackTrace()
         } catch (e: SocketTimeoutException) {
             emit(NetworkResult.Error("Socket Timeout"))
+            e.printStackTrace()
         } catch (e: IOException) {
             emit(NetworkResult.Error(e.message ?: "Unknown IO Error"))
+            e.printStackTrace()
         } catch (e: Exception) {
             emit(NetworkResult.Error(e.message ?: "Something went wrong"))
+            e.printStackTrace()
         }
     }
 }

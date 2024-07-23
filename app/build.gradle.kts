@@ -5,26 +5,22 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
-
 }
 
 android {
     namespace = "com.bibek.recipedatabase"
     compileSdk = ProjectConfig.COMPILE_SDK
-
     defaultConfig {
         applicationId = "com.bibek.recipedatabase"
         minSdk = ProjectConfig.MIN_SDK
         targetSdk = ProjectConfig.TARGET_SDK
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "com.bibek.recipedatabase.AppTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false

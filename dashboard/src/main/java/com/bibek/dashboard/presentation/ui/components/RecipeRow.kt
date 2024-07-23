@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
@@ -27,58 +28,73 @@ import com.bibek.dashboard.domain.model.search.response.Recipe
 
 @ExperimentalAnimationApi
 @Composable
-fun RecipeRow(recipe: Recipe,
+fun RecipeRow(
+    recipe: Recipe,
     onItemClick: (Int) -> Unit = {}
 ) {
     val painter = rememberAsyncImagePainter(recipe.image)
     Card(
         modifier = Modifier
-            .padding(4.dp)
             .fillMaxWidth()
-            .height(240.dp)
             .clickable {
                 onItemClick(recipe.id)
             },
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
     ) {
         Column(
-            modifier = Modifier
-                .padding(4.dp)
-                .fillMaxHeight(),
+            modifier = Modifier,
             verticalArrangement = Arrangement.Center
         ) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomStart,){
+            Box(
+                modifier = Modifier
+                    .height(250.dp)
+                    .padding(4.dp),
+                contentAlignment = Alignment.BottomStart,
+            ) {
                 Image(
                     painter = painter,
                     contentDescription = stringResource(R.string.recipe_image),
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth()
                         .clip(RoundedCornerShape(15.dp)),
                     contentScale = ContentScale.Crop
                 )
                 if (painter.state is AsyncImagePainter.State.Loading) {
-                    Box(modifier = Modifier
-                        .height(190.dp)
-                        .fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Box(
+                        modifier = Modifier
+                            .height(190.dp)
+                            .fillMaxWidth(), contentAlignment = Alignment.Center
+                    ) {
                         CircularProgressIndicator(color = MaterialTheme.colorScheme.onBackground)
                     }
                 }
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Black.copy(alpha = 0.7f), Color.Transparent
-                            ), startY = Float.POSITIVE_INFINITY, endY = 0.5f
-                        ), shape = RoundedCornerShape(15.dp)
-                    ))
-                Text(
-                    text = recipe.title,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = Color.White
-                    , modifier = Modifier.padding(10.dp)
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color.Black.copy(alpha = 0.7f), Color.Transparent
+                                ), startY = Float.POSITIVE_INFINITY, endY = 0.5f
+                            ), shape = RoundedCornerShape(15.dp)
+                        )
                 )
             }
+            Text(
+                text = recipe.title,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.padding(start = 10.dp)
+            )
+            Spacer(modifier = Modifier.height(5.dp))
         }
     }
+
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Preview(showSystemUi = true)
+@Composable
+fun RecipeRowUI(modifier: Modifier = Modifier) {
+    RecipeRow(recipe = Recipe(title = "long time coming"))
 }
