@@ -8,8 +8,10 @@ import androidx.paging.map
 import com.bibek.dashboard.data.local.RecipeDao
 import com.bibek.dashboard.data.mapper.toRecipe
 import com.bibek.dashboard.data.remote.RecipeRemoteMediator
+import com.bibek.dashboard.data.remote.model.query.Query
 import com.bibek.dashboard.domain.model.search.response.Recipe
 import com.bibek.dashboard.domain.repository.RecipeRepository
+import com.bibek.dashboard.utils.PAGE_SIZE
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -24,13 +26,19 @@ class RecipeRepositoryImpl(
     ): Flow<PagingData<Recipe>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 20,
-                prefetchDistance = 5,
-                enablePlaceholders = false,
-                initialLoadSize = 1),
+                pageSize = PAGE_SIZE,
+                prefetchDistance = 0,
+                enablePlaceholders = true, initialLoadSize = PAGE_SIZE + (2 * 5)),
             remoteMediator = RecipeRemoteMediator(
                 recipeDao = recipeDao,
-                httpClient = httpClient
+                httpClient = httpClient,
+                query = Query(
+                    query = query,
+                    cuisine = cuisine,
+                    diet = diet,
+                    sort =sort
+                )
+
             ),
             pagingSourceFactory = { recipeDao.getRecipePagingSource() }
         ).flow.map { pagingData-> pagingData.map { it.toRecipe()} }

@@ -27,8 +27,7 @@ import com.bibek.dashboard.domain.model.search.response.Recipe
 
 @ExperimentalAnimationApi
 @Composable
-fun RecipeRow(
-    recipe: Recipe,
+fun RecipeRow(recipe: Recipe,
     onItemClick: (Int) -> Unit = {}
 ) {
     val painter = rememberAsyncImagePainter(recipe.image)
@@ -38,7 +37,7 @@ fun RecipeRow(
             .fillMaxWidth()
             .height(240.dp)
             .clickable {
-                 onItemClick(recipe.id)
+                onItemClick(recipe.id)
             },
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
     ) {
