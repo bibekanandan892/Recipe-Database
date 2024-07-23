@@ -1,15 +1,11 @@
-package com.bibek.dashboard.data.model.scarch.res
+package com.bibek.dashboard.data.remote.model.search.response
 
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Entity(tableName = "Recipe_Table")
 @Serializable
-data class Recipe(
-    @PrimaryKey
+data class RecipeDto(
     @SerialName("id")
     val id: Int? = 0,
     @SerialName("image")

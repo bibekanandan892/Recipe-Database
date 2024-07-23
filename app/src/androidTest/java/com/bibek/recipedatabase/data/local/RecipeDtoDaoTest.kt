@@ -3,7 +3,7 @@ package com.bibek.recipedatabase.data.local
 import androidx.paging.LoadType
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bibek.dashboard.data.local.RecipeDao
-import com.bibek.dashboard.data.model.scarch.res.Recipe
+import com.bibek.dashboard.data.local.model.search.RecipeEntity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.first
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class RecipeDaoTest {
+class RecipeDtoDaoTest {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
@@ -102,9 +102,9 @@ class RecipeDaoTest {
     }
 
     // Helper function to create a list of Recipe objects
-    private fun createRecipeList(size: Int = 10): List<Recipe> {
+    private fun createRecipeList(size: Int = 10): List<RecipeEntity> {
         return List(size) { index ->
-            Recipe(
+            RecipeEntity(
                 id = index,
                 image = "https://example.com/image_$index.jpg",
                 imageType = "jpg",

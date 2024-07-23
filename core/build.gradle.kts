@@ -1,26 +1,19 @@
-
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("org.jetbrains.kotlin.plugin.serialization")
-
     id("com.google.devtools.ksp")
 }
-
 android {
     namespace = "com.bibek.core"
-    compileSdk = ProjectConfig.compileSdk
-
+    compileSdk = ProjectConfig.COMPILE_SDK
     defaultConfig {
-        minSdk = ProjectConfig.minSdk
-
+        minSdk = ProjectConfig.MIN_SDK
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -28,14 +21,25 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField(
+                "String", "API_KEY", "\"dd04b71f9ee94ba79f0fc7d0e6918653\""
+            )
+        }
+        debug {
+            buildConfigField(
+                "String", "API_KEY", "\"dd04b71f9ee94ba79f0fc7d0e6918653\""
+            )
         }
     }
     compileOptions {
-        sourceCompatibility = ProjectConfig.javaVersion
-        targetCompatibility = ProjectConfig.javaVersion
+        sourceCompatibility = ProjectConfig.JAVA_VERSION
+        targetCompatibility = ProjectConfig.JAVA_VERSION
     }
     kotlinOptions {
-        jvmTarget = ProjectConfig.jvmTarget
+        jvmTarget = ProjectConfig.JVM_TARGET
+    }
+    buildFeatures {
+        buildConfig = true
     }
     packaging {
         resources {
@@ -53,12 +57,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
     //Dagger Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
-
     //retrofit
     implementation(libs.okkhttp)
     implementation(libs.retrofit2.kotlin.coroutines.adapter)
@@ -66,8 +68,6 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.converter.moshi)
     implementation(libs.converter.scalars)
-
-
     //ktor
     implementation(libs.ktor.core)
     implementation(libs.ktor.client.content.negotiation)
@@ -81,8 +81,6 @@ dependencies {
     implementation(libs.ktor.client.serialization)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.auth)
-
-
     //room
     implementation(libs.androidx.room)
     implementation(libs.room.ktx)

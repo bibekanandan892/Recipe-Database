@@ -1,7 +1,7 @@
 package com.bibek.dashboard.domain.usecase
 
 import androidx.paging.PagingData
-import com.bibek.dashboard.data.model.scarch.res.Recipe
+import com.bibek.dashboard.domain.model.search.response.Recipe
 import com.bibek.dashboard.domain.repository.RecipeRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

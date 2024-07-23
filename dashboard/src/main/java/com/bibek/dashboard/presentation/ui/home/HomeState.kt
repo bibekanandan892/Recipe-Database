@@ -1,18 +1,16 @@
 package com.bibek.dashboard.presentation.ui.home
 
 import androidx.paging.PagingData
-import androidx.room.Query
-import com.bibek.dashboard.data.model.scarch.res.Recipe
+import com.bibek.dashboard.data.remote.model.search.response.RecipeDto
+import com.bibek.dashboard.domain.model.search.response.Recipe
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
-data class  HomeState(
+data class HomeState(
     val isLoading: Boolean = false,
-    val recipeList : List<Recipe> = listOf(),
+    val recipeDtoList: List<RecipeDto> = listOf(),
     val query: String = "",
+    val recipePager: Flow<PagingData<Recipe>> = flowOf()
 )
 
-sealed interface HomeEvent{
-    data class OnQueryChange(val query: String) : HomeEvent
-    data object OnSearchClick : HomeEvent
 
-}

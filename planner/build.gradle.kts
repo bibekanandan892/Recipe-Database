@@ -3,18 +3,14 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
-
     id("org.jetbrains.kotlin.plugin.serialization")
-
     id("com.google.devtools.ksp")
 }
-
 android {
     namespace = "com.bibek.planner"
-    compileSdk = ProjectConfig.compileSdk
-
+    compileSdk = ProjectConfig.COMPILE_SDK
     defaultConfig {
-        minSdk = ProjectConfig.minSdk
+        minSdk = ProjectConfig.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -22,7 +18,6 @@ android {
             useSupportLibrary = true
         }
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -33,17 +28,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = ProjectConfig.javaVersion
-        targetCompatibility = ProjectConfig.javaVersion
+        sourceCompatibility = ProjectConfig.JAVA_VERSION
+        targetCompatibility = ProjectConfig.JAVA_VERSION
     }
     kotlinOptions {
-        jvmTarget = ProjectConfig.jvmTarget
+        jvmTarget = ProjectConfig.JVM_TARGET
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = ProjectConfig.kotlinCompilerExtensionVersion
+        kotlinCompilerExtensionVersion = ProjectConfig.KOTLIN_COMPILER_EXTENSION_VERSION
     }
     packaging {
         resources {
@@ -54,7 +49,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -76,16 +70,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
-
-    //retrofit
-    implementation(libs.okkhttp)
-    implementation(libs.retrofit2.kotlin.coroutines.adapter)
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.converter.moshi)
-    implementation(libs.converter.scalars)
-
-
     //ktor
     implementation(libs.ktor.core)
     implementation(libs.ktor.client.content.negotiation)

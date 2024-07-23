@@ -17,8 +17,6 @@ import javax.inject.Singleton
     replaces = [RoomDatabaseModule::class]
 )
 object RoomDatabaseModuleTest {
-
-
     @Singleton
     @Provides
     fun provideRoomDataBase(@ApplicationContext context: Context): RecipeDatabase =

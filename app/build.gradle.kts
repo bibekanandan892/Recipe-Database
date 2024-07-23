@@ -10,12 +10,12 @@ plugins {
 
 android {
     namespace = "com.bibek.recipedatabase"
-    compileSdk = ProjectConfig.compileSdk
+    compileSdk = ProjectConfig.COMPILE_SDK
 
     defaultConfig {
         applicationId = "com.bibek.recipedatabase"
-        minSdk = ProjectConfig.minSdk
-        targetSdk = ProjectConfig.targetSdk
+        minSdk = ProjectConfig.MIN_SDK
+        targetSdk = ProjectConfig.TARGET_SDK
         versionCode = 1
         versionName = "1.0"
 
@@ -35,17 +35,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = ProjectConfig.javaVersion
-        targetCompatibility = ProjectConfig.javaVersion
+        sourceCompatibility = ProjectConfig.JAVA_VERSION
+        targetCompatibility = ProjectConfig.JAVA_VERSION
     }
     kotlinOptions {
-        jvmTarget = ProjectConfig.jvmTarget
+        jvmTarget = ProjectConfig.JVM_TARGET
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = ProjectConfig.kotlinCompilerExtensionVersion
+        kotlinCompilerExtensionVersion = ProjectConfig.KOTLIN_COMPILER_EXTENSION_VERSION
     }
     packaging {
         resources {
@@ -56,7 +56,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -76,7 +75,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
     // Dagger Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
@@ -84,12 +82,8 @@ dependencies {
     androidTestImplementation(libs.hilt.android.testing)
     debugImplementation(libs.hilt.android.testing)
     kaptAndroidTest(libs.hilt.android.compiler)
-
     //turbine
-
     androidTestImplementation(libs.turbine)
-
-
     //retrofit
     implementation(libs.okkhttp)
     implementation(libs.retrofit2.kotlin.coroutines.adapter)
@@ -97,8 +91,6 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.converter.moshi)
     implementation(libs.converter.scalars)
-
-
     //ktor
     implementation(libs.ktor.core)
     implementation(libs.ktor.client.content.negotiation)
@@ -112,13 +104,12 @@ dependencies {
     implementation(libs.ktor.client.serialization)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.auth)
-
     //room
     implementation(libs.androidx.room)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.room.paging)
-    androidTestImplementation( "androidx.room:room-testing:2.6.1")
+    androidTestImplementation(libs.room.testing)
 
 }
