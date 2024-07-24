@@ -42,7 +42,6 @@ fun RecipeRow(
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
     ) {
         Column(
-            modifier = Modifier,
             verticalArrangement = Arrangement.Center
         ) {
             Box(
@@ -89,7 +88,6 @@ fun RecipeRow(
             Spacer(modifier = Modifier.height(5.dp))
         }
     }
-
 }
 
 @OptIn(ExperimentalAnimationApi::class)
