@@ -1,6 +1,5 @@
 package com.bibek.dashboard.data.local
 
-import androidx.paging.LoadType
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
@@ -14,10 +13,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface RecipeDao {
     @Transaction
-    suspend fun refreshRecipes(loadType: LoadType, recipeDtoList: List<RecipeEntity>) {
-        if (loadType == LoadType.REFRESH) {
-            deleteAll()
-        }
+    suspend fun refreshRecipes( recipeDtoList: List<RecipeEntity>) {
+        deleteAll()
         upsertAll(recipeDtoList)
     }
 

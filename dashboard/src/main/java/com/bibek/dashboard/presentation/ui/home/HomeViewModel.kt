@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.bibek.core.utils.Toaster
+import com.bibek.core.utils.connectivity.ConnectionState
 import com.bibek.core.utils.connectivity.ConnectivityObserver
 import com.bibek.core.utils.navigation.Destination
 import com.bibek.core.utils.navigation.Navigator
@@ -18,6 +19,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,20 +37,22 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HomeState())
     val uiState get() = _uiState.asStateFlow()
     private val _queryFlow = MutableSharedFlow<String>(replay = 1)
-
-
     init {
         getRecipe()
         viewModelScope.launch {
             _queryFlow
-                .debounce(1000)
+                .debounce(600)
                 .distinctUntilChanged()
                 .collect { query ->
                     getRecipe(query = query)
                 }
         }
+        connectivityObserver.connectionState.onEach {
+            if(it == ConnectionState.Available){
+                getRecipe(query = uiState.value.query)
+            }
+        }.launchIn(viewModelScope)
     }
-
     private fun getRecipe(query: String = "") {
         _uiState.update { uiState ->
             val recipePager: Flow<PagingData<Recipe>> =
@@ -56,7 +61,6 @@ class HomeViewModel @Inject constructor(
             uiState.copy(recipePager = recipePager)
         }
     }
-
     fun onEvent(event: HomeEvent) {
         viewModelScope.launch {
             when (event) {

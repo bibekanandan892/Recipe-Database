@@ -68,7 +68,6 @@ dependencies {
     implementation(project(":core"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -113,5 +112,14 @@ dependencies {
     //paging
     implementation(libs.paging.compose)
     implementation(libs.paging.runtime.ktx)
+
+
+    implementation (libs.androidx.foundation)
+    implementation(libs.androidx.material)
+    //work
+    implementation(libs.androidx.work.runtime.ktx)
+
+    implementation(libs.maxkeppeler.sheets.compose.dialogs.core)
+    implementation(libs.maxkeppeler.sheets.compose.dialogs.clock)
 
 }

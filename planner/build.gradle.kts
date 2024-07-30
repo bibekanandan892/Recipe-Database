@@ -19,11 +19,19 @@ android {
         }
     }
     buildTypes {
+        debug {
+            buildConfigField(
+                "String", "GET_RECIPE", "\"https://api.spoonacular.com/recipes/\""
+            )
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
+            )
+            buildConfigField(
+                "String", "GET_RECIPE", "\"https://api.spoonacular.com/recipes/\""
             )
         }
     }
@@ -36,6 +44,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = ProjectConfig.KOTLIN_COMPILER_EXTENSION_VERSION
@@ -51,7 +60,6 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -59,6 +67,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(project(":core"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -83,4 +92,8 @@ dependencies {
     implementation(libs.ktor.client.serialization)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.auth)
+
+    //time picker
+    implementation(libs.maxkeppeler.sheets.compose.dialogs.core)
+    implementation(libs.maxkeppeler.sheets.compose.dialogs.clock)
 }

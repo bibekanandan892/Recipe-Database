@@ -1,10 +1,12 @@
 package com.bibek.dashboard.data.repository
 
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.bibek.core.data.local.dao.RecipeAlarmDao
+import com.bibek.core.data.local.model.recipe_alarm_entity.RecipeAlarmEntity
+import com.bibek.core.utils.connectivity.ConnectivityObserver
 import com.bibek.core.utils.network.NetworkResult
 import com.bibek.core.utils.network.handleResponse
 import com.bibek.dashboard.BuildConfig
@@ -23,18 +25,18 @@ import kotlinx.coroutines.flow.map
 
 class RecipeRepositoryImpl(
     private val httpClient: HttpClient,
-    private val recipeDao: RecipeDao
+    private val recipeDao: RecipeDao,
+    private val recipeAlarmDao: RecipeAlarmDao,
+    private val connectivityObserver: ConnectivityObserver
 ) : RecipeRepository {
-    @OptIn(ExperimentalPagingApi::class)
     override fun getRecipe(
         query: String, cuisine: String, diet: String, sort: String
     ): Flow<PagingData<Recipe>> {
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
-                prefetchDistance = 0,
-                enablePlaceholders = true, initialLoadSize = PAGE_SIZE + (2 * 5)),
-            remoteMediator = RecipeRemoteMediator(
+                prefetchDistance = 5,),
+            pagingSourceFactory = {  RecipeRemoteMediator(
                 recipeDao = recipeDao,
                 httpClient = httpClient,
                 query = Query(
@@ -42,11 +44,12 @@ class RecipeRepositoryImpl(
                     cuisine = cuisine,
                     diet = diet,
                     sort =sort
-                )
-
-            ),
-            pagingSourceFactory = { recipeDao.getRecipePagingSource() }
-        ).flow.map { pagingData-> pagingData.map { it.toRecipe()} }
+                ),
+                connectivityObserver = connectivityObserver
+            ) }
+        ).flow.map { pagingData-> pagingData.map {
+            it.toRecipe()
+        } }
     }
 
     override fun getRecipeDetails(
@@ -56,4 +59,9 @@ class RecipeRepositoryImpl(
             httpClient.get(urlString = BuildConfig.GET_RECIPE + recipeId +"/information")
         }
     }
+
+    override suspend fun saveRecipeAlarm(recipeAlarmEntity: RecipeAlarmEntity) {
+        recipeAlarmDao.insertRecipeAlarm(recipeAlarmEntity)
+    }
+
 }
