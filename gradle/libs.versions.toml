@@ -1,5 +1,6 @@
 [versions]
 agp = "8.5.0"
+foundation = "1.6.8"
 kotlin = "1.9.23"
 coreKtx = "1.10.1"
 junit = "4.13.2"
@@ -10,21 +11,27 @@ lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.8.0"
 composeBom = "2024.04.01"
 appcompat = "1.6.1"
-material = "1.10.0"
-hilt  = "2.47"
+material = "1.12.0"
+hilt = "2.47"
 hilt-navigation = "1.2.0"
 ktor_version = "2.2.4"
+materialVersion = "1.6.8"
 room = "2.6.1"
 devtools-ksp = '1.9.23-1.0.20'
-
-androidx-navigation-compose  = "2.8.0-alpha08"
+maxkeppeler-sheets-compose-dialogs = "1.3.0"
+androidx-navigation-compose = "2.8.0-alpha08"
 paging = "3.3.0"
 junitJupiter = "5.8.1"
 runner = "1.6.1"
+foundationAndroid = "1.6.8"
+workRuntimeKtx = "2.9.0"
 
 [libraries]
-androidx-navigation-compose = { module =  "androidx.navigation:navigation-compose" ,version.ref = "androidx-navigation-compose"}
+androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
+androidx-material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation-compose" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -37,26 +44,23 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-material3 = { group = "androidx.compose.material", name = "material" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-
-
-
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 # Paging
-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx",version.ref = "paging"}
-paging-compose = { module = "androidx.paging:paging-compose" , version.ref = "paging"}
+paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging" }
+paging-compose = { module = "androidx.paging:paging-compose", version.ref = "paging" }
 
 #hilt
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
-hilt-android-testing = { group = "com.google.dagger" , name = "hilt-android-testing", version.ref = "hilt" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation" }
 
 #flow test
 
-turbine = {module = "app.cash.turbine:turbine",version = "1.1.0"}
+turbine = { module = "app.cash.turbine:turbine", version = "1.1.0" }
 
 #retrofit
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version = "2.11.0" }
@@ -79,23 +83,26 @@ ktor-client-apache = { group = "io.ktor", name = "ktor-client-apache", version.r
 ktor-serialization-gson = { group = "io.ktor", name = "ktor-serialization-gson", version.ref = "ktor_version" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor_version" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor_version" }
-
 #coil
 coil = { group = "io.coil-kt", name = "coil-compose", version = "2.4.0" }
 
+#time picker
+maxkeppeler-sheets-compose-dialogs-core = { group = "com.maxkeppeler.sheets-compose-dialogs", name = "core", version.ref = "maxkeppeler-sheets-compose-dialogs" }
+maxkeppeler-sheets-compose-dialogs-clock = { group = "com.maxkeppeler.sheets-compose-dialogs", name = "clock", version.ref = "maxkeppeler-sheets-compose-dialogs" }
 
 #room
 androidx-room = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
-room-paging = {module = "androidx.room:room-paging", version.ref = "room"}
-room-testing = {module = "androidx.room:room-testing",version.ref = "room"}
+room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
+room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 
 #classpath
 kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
+androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -8,5 +8,6 @@ fun RecipeDto.toRecipeEntity(): RecipeEntity {
         id = id,
         image = image,
         imageType = imageType,
-        title = title)
+        title = title
+    )
 }

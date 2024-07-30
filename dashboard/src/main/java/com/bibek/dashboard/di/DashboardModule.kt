@@ -1,5 +1,7 @@
 package com.bibek.dashboard.di
 
+import com.bibek.core.data.local.dao.RecipeAlarmDao
+import com.bibek.core.utils.connectivity.ConnectivityObserver
 import com.bibek.dashboard.data.local.RecipeDao
 import com.bibek.dashboard.data.repository.RecipeRepositoryImpl
 import com.bibek.dashboard.domain.repository.RecipeRepository
@@ -15,7 +17,13 @@ object DashboardModule {
     @Provides
     fun provideRecipeRepository(
         httpClient: HttpClient,
-        recipeDao: RecipeDao
-    ): RecipeRepository =
-        RecipeRepositoryImpl(httpClient = httpClient,recipeDao  = recipeDao)
+        recipeDao: RecipeDao,
+        recipeAlarmDao: RecipeAlarmDao,
+        connectivityObserver: ConnectivityObserver
+    ): RecipeRepository = RecipeRepositoryImpl(
+        httpClient = httpClient,
+        recipeDao = recipeDao,
+        connectivityObserver = connectivityObserver,
+        recipeAlarmDao = recipeAlarmDao
+    )
 }

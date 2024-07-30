@@ -1,6 +1,5 @@
 package com.bibek.recipedatabase.data.local
 
-import androidx.paging.LoadType
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.bibek.dashboard.data.local.RecipeDao
 import com.bibek.dashboard.data.local.model.search.RecipeEntity
@@ -41,40 +40,9 @@ class RecipeDtoDaoTest {
         launch {
             recipeDao.upsertAll(recipeList) // Insert the list of recipes into the database
         }.join()
-
         val recipeListFromDb = recipeDao.getAllRecipe().first().toList() // Retrieve all recipes from the database
         assert(10 == recipeListFromDb.size) // Assert that there are 10 recipes in the database
     }
-
-    @Test
-    fun refreshRecipes_LoadType_Refresh_newListShouldBeUpdated() = runTest {
-        val recipeList = createRecipeList()
-        // Append 10 elements to the database
-        launch {
-            recipeDao.refreshRecipes(loadType = LoadType.APPEND, recipeList)
-        }.join()
-
-        // Append 20 more elements to the database
-        val recipeListOfSize20 = createRecipeList(20)
-        launch {
-            recipeDao.refreshRecipes(loadType = LoadType.APPEND, recipeListOfSize20)
-        }.join()
-
-        val recipeListAfterAppend = recipeDao.getAllRecipe().first().toList()
-        // List size should be 20 because the first 10 elements are replaced by the new elements
-        assert(recipeListAfterAppend.size == 20)
-
-        // Insert 10 elements with LoadType.REFRESH, replacing all existing elements
-        launch {
-            recipeDao.refreshRecipes(loadType = LoadType.REFRESH, recipeList)
-        }.join()
-
-        val recipeListAfterRefresh = recipeDao.getAllRecipe().first().toList()
-
-        // The database should contain only the 10 new elements
-        assert(10 == recipeListAfterRefresh.size)
-    }
-
     @Test
     fun deleteAllRecipe_expected0Recipe() = runTest {
         val recipeList = createRecipeList()

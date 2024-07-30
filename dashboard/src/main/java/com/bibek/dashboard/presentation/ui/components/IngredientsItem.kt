@@ -7,8 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Card
-import androidx.compose.material3.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -23,11 +24,11 @@ import com.bibek.dashboard.data.remote.model.recipe_details.ExtendedIngredient
     Card(
         modifier = Modifier
             .padding(10.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(), elevation = 6.dp, shape = RoundedCornerShape(20.dp)
     ) {
         Row {
             Spacer(modifier = Modifier.width(12.dp))
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp)) {
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = ingredient.nameClean.toString(),
