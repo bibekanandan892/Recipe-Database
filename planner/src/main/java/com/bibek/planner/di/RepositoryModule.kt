@@ -7,7 +7,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import io.ktor.client.HttpClient
 import javax.inject.Singleton
 
 
@@ -16,6 +15,6 @@ import javax.inject.Singleton
 object RepositoryModule {
     @Singleton
     @Provides
-    fun providePlannerRepository(httpClient: HttpClient , recipeAlarmDao: RecipeAlarmDao): ScheduleRecipeRepository =
-        ScheduleRecipeRepositoryImpl(httpClient =httpClient ,recipeAlarmDao = recipeAlarmDao)
+    fun providePlannerRepository(recipeAlarmDao: RecipeAlarmDao): ScheduleRecipeRepository =
+        ScheduleRecipeRepositoryImpl(recipeAlarmDao = recipeAlarmDao)
 }
