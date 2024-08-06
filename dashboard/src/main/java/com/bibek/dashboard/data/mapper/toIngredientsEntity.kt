@@ -10,7 +10,7 @@ fun ExtendedIngredient.toIngredientsEntity(): ExtendedIngredientEntity {
             image = this.image,
             consistency = this.consistency,
             name = this.name,
-            original = this.original,
+            nameClean = this.nameClean,
             originalName = this.originalName,
             amount = this.amount,
             unit = this.unit,

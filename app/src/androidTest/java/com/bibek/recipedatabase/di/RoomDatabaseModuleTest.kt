@@ -2,6 +2,7 @@ package com.bibek.recipedatabase.di
 
 import android.content.Context
 import androidx.room.Room
+import com.bibek.core.data.local.dao.RecipeAlarmDao
 import com.bibek.dashboard.data.local.RecipeDao
 import com.bibek.recipedatabase.data.local.RecipeDatabase
 import dagger.Module
@@ -11,25 +12,30 @@ import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import javax.inject.Singleton
 
-@Module
-@TestInstallIn(
-    components = [SingletonComponent::class],
-    replaces = [RoomDatabaseModule::class]
-)
-object RoomDatabaseModuleTest {
-    @Singleton
-    @Provides
-    fun provideRoomDataBase(@ApplicationContext context: Context): RecipeDatabase =
-        Room.inMemoryDatabaseBuilder(
-            context.applicationContext,
-            RecipeDatabase::class.java,
-        )
-            .allowMainThreadQueries()
-            .build()
-
-    @Singleton
-    @Provides
-    fun provideRecipeDao(recipeDatabase: RecipeDatabase): RecipeDao = recipeDatabase.recipeDao()
-
-
-}
+//@Module
+//@TestInstallIn(
+//    components = [SingletonComponent::class],
+//    replaces = [RoomDatabaseModule::class]
+//)
+//object RoomDatabaseModuleTest {
+//    @Singleton
+//    @Provides
+//    fun provideRoomDataBase(@ApplicationContext context: Context): RecipeDatabase =
+//        Room.inMemoryDatabaseBuilder(
+//            context.applicationContext,
+//            RecipeDatabase::class.java,
+//        )
+//            .allowMainThreadQueries()
+//            .build()
+//
+//    @Singleton
+//    @Provides
+//    fun provideRecipeDao(recipeDatabase: RecipeDatabase): RecipeDao = recipeDatabase.recipeDao()
+//
+//    @Singleton
+//    @Provides
+//    fun provideRecipeAlarmDao(recipeDatabase: RecipeDatabase): RecipeAlarmDao {
+//        return recipeDatabase.recipeAlarmDao()
+//    }
+//
+//}

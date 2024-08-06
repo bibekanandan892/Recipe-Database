@@ -63,6 +63,7 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":dashboard"))
     implementation(libs.androidx.runner)
+    implementation(project(":planner"))
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
@@ -73,7 +74,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     // Dagger Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
     androidTestImplementation(libs.hilt.android.testing)
     debugImplementation(libs.hilt.android.testing)

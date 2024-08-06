@@ -7,7 +7,9 @@ import com.bibek.dashboard.data.local.RecipeDao
 import com.bibek.recipedatabase.data.local.RecipeDatabase
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
+import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -32,6 +34,8 @@ object RoomDatabaseModule {
 
     @Singleton
     @Provides
-    fun provideRecipeAlarmDao(recipeDatabase: RecipeDatabase): RecipeAlarmDao =
-        recipeDatabase.recipeAlarmDao()
+    fun provideRecipeAlarmDao(recipeDatabase: RecipeDatabase): RecipeAlarmDao {
+        return recipeDatabase.recipeAlarmDao()
+    }
+
 }

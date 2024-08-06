@@ -1,5 +1,7 @@
 package com.bibek.dashboard.presentation.ui.components
 
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -41,9 +43,17 @@ import com.bibek.dashboard.domain.model.search.response.Recipe
 @Composable
 fun RecipeRow(
     recipe: Recipe,
-    onItemClick: (Int) -> Unit = {}
+    onItemClick: (Int) -> Unit = {},
+    isLoadBitmap : Boolean = false,
+    onImageLoaded: (Bitmap) -> Unit = {}
 ) {
     val painter = rememberAsyncImagePainter(recipe.image)
+    val painterState = painter.state
+    if (isLoadBitmap && painterState is AsyncImagePainter.State.Success) {
+        // Extract the bitmap from the painter's result
+        val imageBitmap = (painterState.result.drawable as BitmapDrawable).bitmap
+        onImageLoaded(imageBitmap)
+    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -106,6 +116,75 @@ fun RecipeRow(
         }
     }
 }
+
+
+@ExperimentalAnimationApi
+@Composable
+fun RecipeRow(
+    painter: AsyncImagePainter,
+    title: String
+
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(corner = CornerSize(26.dp)),
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .height(450.dp),
+                contentAlignment = Alignment.BottomStart,
+            ) {
+                Image(
+                    painter = painter,
+                    contentDescription = stringResource(R.string.recipe_image),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(RoundedCornerShape(15.dp)),
+                    contentScale = ContentScale.Crop
+                )
+                if (painter.state is AsyncImagePainter.State.Loading) {
+                    Box(
+                        modifier = Modifier
+                            .height(450.dp)
+                            .fillMaxWidth(), contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(color = ColorPrimary)
+                    }
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color.Black.copy(alpha = 0.7f), Color.Transparent
+                                ), startY = Float.POSITIVE_INFINITY, endY = 0.5f
+                            ), shape = RoundedCornerShape(15.dp)
+                        ), contentAlignment = Alignment.BottomStart
+                ){
+                    Column {
+                        Text(
+                            text = title,
+                            fontStyle = FontStyle.Normal,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White,
+                            fontSize = TextUnit(6f,TextUnitType.Em),
+                            modifier = Modifier.padding(start = 10.dp)
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+                    }
+
+
+                }
+            }
+        }
+    }
+}
+
 
 @OptIn(ExperimentalAnimationApi::class)
 @Preview(showSystemUi = true)

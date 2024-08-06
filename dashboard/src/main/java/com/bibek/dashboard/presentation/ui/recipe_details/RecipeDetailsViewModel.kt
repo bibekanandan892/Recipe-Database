@@ -1,15 +1,16 @@
 package com.bibek.dashboard.presentation.ui.recipe_details
 
+import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bibek.core.data.local.model.recipe_alarm_entity.RecipeAlarmEntity
 import com.bibek.core.utils.Toaster
+import com.bibek.core.utils.formatTo12Hour
 import com.bibek.core.utils.navigation.Navigator
 import com.bibek.core.utils.network.collectResponse
 import com.bibek.dashboard.data.mapper.toIngredientsEntity
 import com.bibek.dashboard.domain.usecase.GetRecipeDetailsUseCase
 import com.bibek.dashboard.domain.usecase.SaveRecipeAlarmUseCase
-import com.bibek.dashboard.utils.formatTo12Hour
 import com.bibek.dashboard.utils.getCurrentTimeIn12HourFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,17 +32,18 @@ class RecipeDetailsViewModel @Inject constructor(
     fun onEvent(event: RecipeDetailsEvent) {
         viewModelScope.launch {
             when (event) {
-                RecipeDetailsEvent.OnAddRecipeClick -> {}
+                RecipeDetailsEvent.OnAddRecipeClick -> {
+
+                }
                 RecipeDetailsEvent.OnViewMore -> {}
                 is RecipeDetailsEvent.GetRecipe -> getRecipeDetails(event.recipeId)
                 RecipeDetailsEvent.NavigateBack -> navigator.back()
-                RecipeDetailsEvent.SetRecipeAlarm -> setRecipeAlarm()
+                is RecipeDetailsEvent.SetRecipeAlarm -> setRecipeAlarm(event.image, alarmId = event.alarmId)
                 RecipeDetailsEvent.OnTimeClick -> _uiState.update { uiState ->
                     uiState.copy(
                         isShowClock = true
                     )
                 }
-
                 RecipeDetailsEvent.OnCloseClock -> {
                     _uiState.update { uiState ->
                         uiState.copy(
@@ -58,7 +60,7 @@ class RecipeDetailsViewModel @Inject constructor(
                                 event.minutes
                             ),
                             hour = event.hour,
-                            min = event.minutes
+                            minute = event.minutes
                         )
                     }
                 }
@@ -72,13 +74,19 @@ class RecipeDetailsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun setRecipeAlarm() {
+    private suspend fun setRecipeAlarm(image: Bitmap,alarmId : Int) {
         saveRecipeAlarmUseCase.invoke(
             recipeAlarmEntity = RecipeAlarmEntity(
+                id = alarmId,
                 hour = uiState.value.hour,
-                min = uiState.value.min,
+                minute = uiState.value.minute,
                 dayOfWeek = uiState.value.selectedDay?.dayOfWeek,
-                ingredients = uiState.value.ingredients.map { it.toIngredientsEntity() })
+                ingredients = uiState.value.ingredients.map { it.toIngredientsEntity() },
+                isRepeat = true,
+                recipeId = uiState.value.id.toString(),
+                name = uiState.value.name,
+                image = image
+            )
         )
     }
 
@@ -86,7 +94,7 @@ class RecipeDetailsViewModel @Inject constructor(
         getRecipeDetailsUseCase.invoke(recipeId = recipeId).collectResponse(onSuccess = {
             _uiState.update { uiState ->
                 uiState.copy(id = it?.id,
-                    title = it?.title ?: "NA",
+                    name = it?.title ?: "NA",
                     image = it?.image ?: "NA",
                     ingredients = it?.extendedIngredients?.filterNotNull()?.map {
                         it.copy(
@@ -100,7 +108,7 @@ class RecipeDetailsViewModel @Inject constructor(
         }, onError = {
             _uiState.update { uiState ->
                 uiState.copy(
-                    title = "", image = "", ingredients = listOf()
+                    name = "", image = "", ingredients = listOf()
                 )
             }
             toaster.error(it)

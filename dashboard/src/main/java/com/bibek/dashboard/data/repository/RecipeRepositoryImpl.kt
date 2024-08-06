@@ -61,7 +61,7 @@ class RecipeRepositoryImpl(
     }
 
     override suspend fun saveRecipeAlarm(recipeAlarmEntity: RecipeAlarmEntity) {
-        recipeAlarmDao.insertRecipeAlarm(recipeAlarmEntity)
+         recipeAlarmDao.insertRecipeAlarm(recipeAlarmEntity)
     }
 
 }

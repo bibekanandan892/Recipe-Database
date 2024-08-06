@@ -28,7 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import java.util.Calendar
+import com.bibek.core.utils.Day
 
 @Composable
 fun ReminderContent(
@@ -122,14 +122,4 @@ fun DayCircle(day: Day, isSelected: Boolean, onClick: () -> Unit) {
     ) {
         Text(text = day.name.first().toString(), color = textColor, fontWeight = FontWeight.SemiBold)
     }
-}
-
-enum class Day(val dayOfWeek: Int) {
-    SUN(dayOfWeek = Calendar.SUNDAY),
-    MON(dayOfWeek = Calendar.MONDAY),
-    TUE(dayOfWeek = Calendar.TUESDAY),
-    WED(dayOfWeek = Calendar.WEDNESDAY),
-    THU(dayOfWeek = Calendar.THURSDAY),
-    FRI(dayOfWeek = Calendar.FRIDAY),
-    SAT(dayOfWeek = Calendar.SATURDAY)
 }

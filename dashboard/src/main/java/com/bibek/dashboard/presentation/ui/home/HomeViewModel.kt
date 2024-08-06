@@ -75,6 +75,8 @@ class HomeViewModel @Inject constructor(
                 is HomeEvent.NavigateToRecipeDetails -> {
                     navigator.navigate(destination = Destination.RECIPE_DETAILS.name + "/${event.recipeId}")
                 }
+
+                HomeEvent.NavigateToScheduleRecipe -> navigator.navigate(Destination.SCHEDULE_RECIPE.name)
             }
         }
     }

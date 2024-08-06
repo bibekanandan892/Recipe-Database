@@ -1,9 +1,19 @@
 package com.bibek.core.utils.alarm
+
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import com.bibek.core.broadcast.AlarmReceiver
+import com.bibek.core.utils.ALARM_ID
+import com.bibek.core.utils.DAY_OF_WEEK
+import com.bibek.core.utils.HOUR
+import com.bibek.core.utils.IS_REPEAT
+import com.bibek.core.utils.MINUTE
+import com.bibek.core.utils.RECIPE_ID
+import com.bibek.core.utils.RECIPE_IMAGE
+import com.bibek.core.utils.RECIPE_NAME
 import java.util.Calendar
 
 fun scheduleWeeklyAlarm(
@@ -12,18 +22,20 @@ fun scheduleWeeklyAlarm(
     dayOfWeek: Int,
     hour: Int,
     minute: Int,
+    isRepeat : Boolean,
     recipeId: String,
-    recipeName: String,
-    recipeImage: String
 ) {
-    val alarmManager : AlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    val alarmManager: AlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val intent = Intent(context, AlarmReceiver::class.java).apply {
-        putExtra("RECIPE_ID", recipeId)
-        putExtra("RECIPE_NAME", recipeName)
-        putExtra("RECIPE_IMAGE", recipeImage)
+        putExtra(RECIPE_ID, recipeId)
+        putExtra(IS_REPEAT, isRepeat)
+        putExtra(HOUR, hour)
+        putExtra(MINUTE, minute)
+        putExtra(DAY_OF_WEEK, dayOfWeek)
+        putExtra(ALARM_ID, alarmId)
     }
     val pendingIntent = PendingIntent.getBroadcast(
-        context, alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT
+        context, alarmId, intent, PendingIntent.FLAG_IMMUTABLE
     )
     val calendar = Calendar.getInstance().apply {
         set(Calendar.DAY_OF_WEEK, dayOfWeek)
@@ -34,10 +46,17 @@ fun scheduleWeeklyAlarm(
             add(Calendar.WEEK_OF_YEAR, 1)
         }
     }
-    alarmManager.setRepeating(
-        AlarmManager.RTC_WAKEUP,
-        calendar.timeInMillis,
-        AlarmManager.INTERVAL_DAY * 7,
-        pendingIntent
-    )
+    try {
+        alarmManager.setExact(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            pendingIntent
+        )
+    } catch (e: SecurityException) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (!checkExactAlarmPermission(context)) {
+                requestExactAlarmPermission(context)
+            }
+        }
+    }
 }

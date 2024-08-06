@@ -3,5 +3,6 @@ package com.bibek.core.utils.navigation
 enum class Destination{
     HOME,
     RECIPE_DETAILS,
-    ADD_RECIPE
+    SCHEDULE_RECIPE,
+    RECIPE_ALARM_DETAILS
 }

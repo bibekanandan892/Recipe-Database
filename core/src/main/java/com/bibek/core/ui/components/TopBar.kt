@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -20,26 +22,31 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 
 @Composable
- fun TopBar(title: String, onBackClick: () -> Unit) {
-    Box(        Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
-        Icon(
-            imageVector = Icons.AutoMirrored.Default.KeyboardArrowLeft,
-            contentDescription = "Back", tint = Color.Black,
-            modifier = Modifier
-                .size(50.dp)
-                .clickable {
-                    onBackClick.invoke()
-                }
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = title,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = TextUnit(5f, TextUnitType.Em)
+fun TopBar(title: String, onBackClick: () -> Unit) {
+    Card {
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .height(60.dp), contentAlignment = Alignment.CenterStart) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Default.KeyboardArrowLeft,
+                contentDescription = "Back", tint = Color.Black,
+                modifier = Modifier
+                    .size(50.dp)
+                    .clickable {
+                        onBackClick.invoke()
+                    }
             )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = TextUnit(5f, TextUnitType.Em)
+                )
+            }
         }
     }
 }
