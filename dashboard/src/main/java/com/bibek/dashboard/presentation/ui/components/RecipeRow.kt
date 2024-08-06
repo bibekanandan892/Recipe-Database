@@ -189,6 +189,6 @@ fun RecipeRow(
 @OptIn(ExperimentalAnimationApi::class)
 @Preview(showSystemUi = true)
 @Composable
-fun RecipeRowUI(modifier: Modifier = Modifier) {
+fun RecipeRowUI() {
     RecipeRow(recipe = Recipe(title = "long time coming"))
 }

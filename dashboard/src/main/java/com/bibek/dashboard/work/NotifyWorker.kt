@@ -14,7 +14,6 @@ class NotifyWorker(context: Context, params: WorkerParameters) : Worker(context,
     override fun doWork(): Result {
         val recipeId = inputData.getString("RECIPE_ID")
         val recipeName = inputData.getString("RECIPE_NAME")
-        val recipeImage = inputData.getString("RECIPE_IMAGE")
         val dayOfWeek = inputData.getInt("DAY_OF_WEEK", -1)
         val hour = inputData.getInt("HOUR", -1)
         val minute = inputData.getInt("MINUTE", -1)
@@ -23,12 +22,12 @@ class NotifyWorker(context: Context, params: WorkerParameters) : Worker(context,
         if (calendar.get(Calendar.DAY_OF_WEEK) == dayOfWeek &&
             calendar.get(Calendar.HOUR_OF_DAY) == hour &&
             calendar.get(Calendar.MINUTE) == minute) {
-            showNotification(recipeId, recipeName, recipeImage)
+            showNotification(recipeId, recipeName)
         }
         return Result.success()
     }
 
-    private fun showNotification(recipeId: String?, recipeName: String?, recipeImage: String?) {
+    private fun showNotification(recipeId: String?, recipeName: String?) {
         val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelId = "recipe_notify_channel"
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

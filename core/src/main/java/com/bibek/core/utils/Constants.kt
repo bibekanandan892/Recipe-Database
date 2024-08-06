@@ -3,8 +3,6 @@ package com.bibek.core.utils
 import java.util.Calendar
 
 const val RECIPE_ID = "RECIPE_ID"
-const val RECIPE_NAME = "RECIPE_NAME"
-const val RECIPE_IMAGE = "RECIPE_IMAGE"
 const val IS_REPEAT = "IS_REPEAT"
 const val HOUR = "HOUR"
 const val MINUTE = "MINUTE"

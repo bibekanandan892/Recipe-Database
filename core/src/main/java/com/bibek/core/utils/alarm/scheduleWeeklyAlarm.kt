@@ -12,8 +12,6 @@ import com.bibek.core.utils.HOUR
 import com.bibek.core.utils.IS_REPEAT
 import com.bibek.core.utils.MINUTE
 import com.bibek.core.utils.RECIPE_ID
-import com.bibek.core.utils.RECIPE_IMAGE
-import com.bibek.core.utils.RECIPE_NAME
 import java.util.Calendar
 
 fun scheduleWeeklyAlarm(

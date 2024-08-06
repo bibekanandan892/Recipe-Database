@@ -1,7 +1,6 @@
 package com.bibek.planner.data.repository
 
 import com.bibek.core.data.local.dao.RecipeAlarmDao
-import com.bibek.core.data.local.model.recipe_alarm_entity.RecipeAlarmEntity
 import com.bibek.planner.data.mapper.toDomain
 import com.bibek.planner.domain.model.RecipeAlarm
 import com.bibek.planner.domain.repository.ScheduleRecipeRepository
