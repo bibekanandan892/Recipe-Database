@@ -8,10 +8,8 @@ import com.bibek.core.di.AlarmReceiverEntryPoint
 import com.bibek.core.utils.ALARM_ID
 import com.bibek.core.utils.TIME_TO_EAT_MESSAGE
 import com.bibek.core.utils.alarm.scheduleWeeklyAlarm
-import com.bibek.core.utils.dispatchers.CoroutinesDispatchers
 import com.bibek.core.utils.notification.showCustomNotification
 import dagger.hilt.android.EntryPointAccessors
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
