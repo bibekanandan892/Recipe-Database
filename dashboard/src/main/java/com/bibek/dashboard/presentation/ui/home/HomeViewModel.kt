@@ -32,7 +32,7 @@ class HomeViewModel @Inject constructor(
     private val searchRecipeUseCase: SearchRecipeUseCase,
     private val toaster: Toaster,
     private val navigator: Navigator,
-    private val connectivityObserver: ConnectivityObserver
+    connectivityObserver: ConnectivityObserver
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeState())
     val uiState get() = _uiState.asStateFlow()
@@ -75,6 +75,8 @@ class HomeViewModel @Inject constructor(
                 is HomeEvent.NavigateToRecipeDetails -> {
                     navigator.navigate(destination = Destination.RECIPE_DETAILS.name + "/${event.recipeId}")
                 }
+
+                HomeEvent.NavigateToScheduleRecipe -> navigator.navigate(Destination.SCHEDULE_RECIPE.name)
             }
         }
     }

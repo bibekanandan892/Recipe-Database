@@ -32,6 +32,8 @@ object RoomDatabaseModule {
 
     @Singleton
     @Provides
-    fun provideRecipeAlarmDao(recipeDatabase: RecipeDatabase): RecipeAlarmDao =
-        recipeDatabase.recipeAlarmDao()
+    fun provideRecipeAlarmDao(recipeDatabase: RecipeDatabase): RecipeAlarmDao {
+        return recipeDatabase.recipeAlarmDao()
+    }
+
 }

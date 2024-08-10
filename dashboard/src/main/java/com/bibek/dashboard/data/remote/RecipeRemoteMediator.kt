@@ -3,6 +3,7 @@ package com.bibek.dashboard.data.remote
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.bibek.core.utils.PAGE_SIZE
 import com.bibek.core.utils.connectivity.ConnectionState
 import com.bibek.core.utils.connectivity.ConnectivityObserver
 import com.bibek.core.utils.network.collectResponse
@@ -13,7 +14,6 @@ import com.bibek.dashboard.data.local.model.search.RecipeEntity
 import com.bibek.dashboard.data.mapper.toRecipeEntity
 import com.bibek.dashboard.data.remote.model.query.Query
 import com.bibek.dashboard.data.remote.model.search.response.RecipeSearchDto
-import com.bibek.dashboard.utils.PAGE_SIZE
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter

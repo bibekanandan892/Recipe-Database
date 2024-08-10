@@ -1,5 +1,16 @@
 <resources>
-    <string name="title_activity_main">MainActivity</string>
     <string name="recipe_image">Recipe Image</string>
     <string name="search">Search…</string>
+    <string name="remainder">Remainder</string>
+    <string name="find_best_recipe_for_cooking">Find Best Recipe \nFor Cooking</string>
+    <string name="no_recipe_available">No Recipe Available</string>
+    <string name="long_time_coming">long time coming</string>
+    <string name="select_time">Select Time</string>
+    <string name="back">Back</string>
+    <string name="save">Save</string>
+    <string name="select_day">Select Day</string>
+    <string name="recipe_details">Recipe Details</string>
+    <string name="add_recipe">Add Recipe</string>
+    <string name="no_recipe_details_found">No Recipe Details Found</string>
+    <string name="ingredients">Ingredients</string>
 </resources>

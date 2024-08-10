@@ -84,7 +84,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     // Dagger Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
     androidTestImplementation(libs.hilt.android.testing)
     kaptAndroidTest(libs.hilt.android.compiler)
@@ -120,6 +120,6 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
 
     implementation(libs.maxkeppeler.sheets.compose.dialogs.core)
-    implementation(libs.maxkeppeler.sheets.compose.dialogs.clock)
+    implementation(libs.maxkeppeler.sheets.compose.dialogs.date.time)
 
 }

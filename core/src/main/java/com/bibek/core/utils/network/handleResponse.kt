@@ -1,5 +1,13 @@
 package com.bibek.core.utils.network
 
+import com.bibek.core.utils.CONNECTION_TIMEOUT_MESSAGE
+import com.bibek.core.utils.ERROR_DESCRIPTION_KEY
+import com.bibek.core.utils.GENERIC_ERROR_MESSAGE
+import com.bibek.core.utils.MESSAGE_KEY
+import com.bibek.core.utils.SOCKET_TIMEOUT_MESSAGE
+import com.bibek.core.utils.STATUS_DESC_KEY
+import com.bibek.core.utils.UNKNOWN_ERROR_MESSAGE
+import com.bibek.core.utils.UNKNOWN_IO_ERROR_MESSAGE
 import io.ktor.client.call.body
 import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.network.sockets.SocketTimeoutException
@@ -9,6 +17,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.json.JSONObject
 import java.io.IOException
+
 
 inline fun <reified T> handleResponse(crossinline call: suspend () -> HttpResponse): Flow<NetworkResult<T>> {
     return flow {
@@ -20,22 +29,23 @@ inline fun <reified T> handleResponse(crossinline call: suspend () -> HttpRespon
             val errorMessage = getErrorDes(errorString = e.response.body())
             emit(NetworkResult.Error(errorMessage ?: e.response.status.description))
         } catch (e: ConnectTimeoutException) {
-            emit(NetworkResult.Error("Connection Timeout"))
+            emit(NetworkResult.Error(CONNECTION_TIMEOUT_MESSAGE))
             e.printStackTrace()
         } catch (e: SocketTimeoutException) {
-            emit(NetworkResult.Error("Socket Timeout"))
+            emit(NetworkResult.Error(SOCKET_TIMEOUT_MESSAGE))
             e.printStackTrace()
         } catch (e: IOException) {
-            emit(NetworkResult.Error(e.message ?: "Unknown IO Error"))
+            emit(NetworkResult.Error(e.message ?: UNKNOWN_IO_ERROR_MESSAGE))
             e.printStackTrace()
         } catch (e: Exception) {
-            emit(NetworkResult.Error(e.message ?: "Something went wrong"))
+            emit(NetworkResult.Error(e.message ?: GENERIC_ERROR_MESSAGE))
             e.printStackTrace()
         }
     }
 }
+
 fun getErrorDes(
-    errorKeys: List<String> = listOf("error_description", "message", "statusDesc"),
+    errorKeys: List<String> = listOf(ERROR_DESCRIPTION_KEY, MESSAGE_KEY, STATUS_DESC_KEY),
     errorString: String
 ): String? {
     try {
@@ -45,7 +55,7 @@ fun getErrorDes(
                 return errorObj.getString(errorKey).toString()
             }
         }
-        return "Unknown Error"
+        return UNKNOWN_ERROR_MESSAGE
     } catch (e: Exception) {
         return e.message
     }

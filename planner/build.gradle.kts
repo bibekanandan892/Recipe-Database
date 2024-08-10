@@ -77,7 +77,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
     //ktor
     implementation(libs.ktor.core)
@@ -95,5 +95,5 @@ dependencies {
 
     //time picker
     implementation(libs.maxkeppeler.sheets.compose.dialogs.core)
-    implementation(libs.maxkeppeler.sheets.compose.dialogs.clock)
+    implementation(libs.maxkeppeler.sheets.compose.dialogs.date.time)
 }

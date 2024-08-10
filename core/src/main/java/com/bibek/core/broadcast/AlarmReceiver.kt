@@ -1,54 +1,67 @@
 package com.bibek.core.broadcast
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import androidx.core.app.NotificationCompat
-import com.bibek.core.R
 import com.bibek.core.data.local.dao.RecipeAlarmDao
-import com.bibek.core.data.local.model.recipe_alarm_entity.RecipeAlarmEntity
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import com.bibek.core.di.AlarmReceiverEntryPoint
+import com.bibek.core.utils.ALARM_ID
+import com.bibek.core.utils.TIME_TO_EAT_MESSAGE
+import com.bibek.core.utils.alarm.scheduleWeeklyAlarm
+import com.bibek.core.utils.notification.showCustomNotification
+import dagger.hilt.android.EntryPointAccessors
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class AlarmReceiver : BroadcastReceiver() {
+    private lateinit var recipeAlarmDao: RecipeAlarmDao
 
-    @Inject
-    lateinit var recipeAlarmDao: RecipeAlarmDao
+    @OptIn(DelicateCoroutinesApi::class)
+    override fun onReceive(context: Context?, intent: Intent?) {
 
-    override fun onReceive(context: Context, intent: Intent) {
-        val recipeId = intent.getIntExtra("RECIPE_ID",0)
-        val recipe = getRecipeById(recipeId)
-        recipe?.let {
-            showNotification(context, recipeId=it.id.toString(), recipeName =  it.title, recipeImage = it.image)
-        }
-    }
-    private fun getRecipeById(id: Int?): RecipeAlarmEntity? {
-        return id?.let {
-            runBlocking {
-                withContext(Dispatchers.IO) {
-                    recipeAlarmDao.getRecipeAlarmById(it)
+        if (context == null || intent == null) return
+
+        val hiltEntryPoint =
+            EntryPointAccessors.fromApplication(context, AlarmReceiverEntryPoint::class.java)
+
+        recipeAlarmDao = hiltEntryPoint.recipeAlarmDao()
+
+        val exceptionHandler = hiltEntryPoint.coroutineExceptionHandler()
+        val dispatchers = hiltEntryPoint.coroutinesDispatchers()
+
+        GlobalScope.launch(exceptionHandler + dispatchers.io()) {
+            val alarmId = intent.getIntExtra(ALARM_ID, 0)
+            val recipeAlarmEntity = recipeAlarmDao.getRecipeAlarmById(alarmId)
+            recipeAlarmEntity?.apply {
+                if (isRepeat) {
+                    withContext(dispatchers.main()){
+                        scheduleWeeklyAlarm(
+                            context = context,
+                            alarmId = alarmId,
+                            dayOfWeek = dayOfWeek ?: return@withContext,
+                            hour = hour ?: return@withContext,
+                            minute = minute ?: return@withContext,
+                            isRepeat = true,
+                            recipeId = recipeId,
+                        )
+                    }
+                }
+                // Create and show the notification
+                recipeAlarmEntity.image?.let {
+                    withContext(dispatchers.main()) {
+                        showCustomNotification(
+                            context,
+                            title = TIME_TO_EAT_MESSAGE,
+                            recipeId = recipeId,
+                            recipeName = name,
+                            image = it
+                        )
+                    }
                 }
             }
         }
     }
-    private fun showNotification(context: Context, recipeId: String, recipeName: String, recipeImage: String) {
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channelId = "recipe_notify_channel"
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId, "Recipe Notifications", NotificationManager.IMPORTANCE_HIGH)
-            notificationManager.createNotificationChannel(channel)
-        }
-        val notification = NotificationCompat.Builder(context, channelId)
-            .setContentTitle("Recipe Reminder")
-            .setContentText("Don't forget to check out the recipe: $recipeName")
-            .setSmallIcon(R.drawable.ic_android_black_24dp)
-            .build()
-        notificationManager.notify(recipeId.hashCode(), notification)
-    }
 }
+

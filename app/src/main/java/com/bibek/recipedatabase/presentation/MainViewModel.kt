@@ -16,9 +16,11 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(private val connectivityObserver : ConnectivityObserver) : ViewModel() {
     var isConnectivityAvailable : MutableState<ConnectionState?> = mutableStateOf(null)
         private set
+
     init {
         observeConnectivity()
     }
+
     private fun observeConnectivity() {
         connectivityObserver.connectionState
             .distinctUntilChanged()

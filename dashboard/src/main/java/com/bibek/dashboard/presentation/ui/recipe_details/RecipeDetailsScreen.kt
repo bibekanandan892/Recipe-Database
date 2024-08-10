@@ -1,5 +1,6 @@
 package com.bibek.dashboard.presentation.ui.recipe_details
 
+import android.graphics.drawable.BitmapDrawable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -27,13 +31,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImagePainter
+import coil.compose.rememberAsyncImagePainter
+import com.bibek.core.ui.components.IngredientsItem
 import com.bibek.core.ui.components.TopBar
-import com.bibek.dashboard.domain.model.search.response.Recipe
+import com.bibek.core.utils.alarm.scheduleWeeklyAlarm
+import com.bibek.dashboard.R
 import com.bibek.dashboard.presentation.ui.components.Button
-import com.bibek.dashboard.presentation.ui.components.IngredientsItem
 import com.bibek.dashboard.presentation.ui.components.RecipeRow
 import com.bibek.dashboard.presentation.ui.components.ReminderContent
 import kotlinx.coroutines.launch
+import java.util.Calendar
+import java.util.UUID
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -42,9 +51,12 @@ fun RecipeDetailsScreen(
     onEvent: (RecipeDetailsEvent) -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden
     )
+    val painter = rememberAsyncImagePainter(uiState.image)
+
     ModalBottomSheetLayout(sheetShape = RoundedCornerShape(
         topEnd = 20.dp,
         topStart = 20.dp
@@ -57,7 +69,34 @@ fun RecipeDetailsScreen(
                 }, closeSelection = {
                     onEvent(RecipeDetailsEvent.OnCloseClock)
                 }, onSaveClick = {
+                    val painterState = painter.state
+                    if (painterState is AsyncImagePainter.State.Success) {
+                        // Extract the bitmap from the painter's result
+                        val imageBitmap = (painterState.result.drawable as BitmapDrawable).bitmap
+                        val alarmId = UUID.randomUUID().hashCode()
 
+                        scheduleWeeklyAlarm(
+                            context = context,
+                            alarmId = alarmId,
+                            dayOfWeek = uiState.selectedDay?.dayOfWeek ?: Calendar.SUNDAY,
+                            hour = uiState.hour,
+                            minute = uiState.minute,
+                            recipeId = uiState.id.toString(),
+                            isRepeat = true,
+                            alarmSchedule = {
+                                onEvent(
+                                    RecipeDetailsEvent.SetRecipeAlarm(
+                                        image = imageBitmap,
+                                        alarmId = alarmId
+                                    )
+                                )
+                                scope.launch {
+                                    bottomSheetState.hide()
+                                }
+                            }
+                        )
+
+                    }
                 }, onDayClick = {
                     onEvent(RecipeDetailsEvent.OnDaySelect(it))
                 }, onTimeClick = { onEvent(RecipeDetailsEvent.OnTimeClick) },
@@ -65,30 +104,38 @@ fun RecipeDetailsScreen(
                     scope.launch {
                         bottomSheetState.hide()
                     }
-                }, selectedDay = uiState.selectedDay)
+                }, selectedDay = uiState.selectedDay
+            )
         }
     ) {
-        RecipeDetailsUI(uiState, onEvent, onAddRecipeClick = {
-            scope.launch {
-                bottomSheetState.show()
-            }
-        })
+        RecipeDetailsUI(
+            painter = painter,
+            uiState = uiState,
+            onEvent = onEvent,
+            onAddRecipeClick = {
+                scope.launch {
+                    bottomSheetState.show()
+                }
+            })
     }
 }
 
 @Composable
 private fun RecipeDetailsUI(
     uiState: RecipeDetailsState,
-    onEvent: (RecipeDetailsEvent) -> Unit, onAddRecipeClick: () -> Unit
+    painter: AsyncImagePainter,
+    onEvent: (RecipeDetailsEvent) -> Unit,
+    onAddRecipeClick: () -> Unit
 ) {
     Scaffold(modifier = Modifier
         .fillMaxSize()
         .padding(top = 10.dp), topBar = {
-        TopBar("Recipe Details",
+        TopBar(
+            title = stringResource(R.string.recipe_details),
             onBackClick = { onEvent(RecipeDetailsEvent.NavigateBack) })
     }, floatingActionButton = {
-        if (uiState.title.isNotEmpty() && uiState.ingredients.isNotEmpty()) {
-            Button(title = "Add Recipe", onClick = onAddRecipeClick)
+        if (uiState.name.isNotEmpty() && uiState.ingredients.isNotEmpty()) {
+            Button(title = stringResource(R.string.add_recipe), onClick = onAddRecipeClick)
         }
     }) {
         Column(
@@ -98,13 +145,13 @@ private fun RecipeDetailsUI(
         ) {
             if (uiState.isRecipeDetailsLoading) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
+                    CircularProgressIndicator(color = Color.Black)
                 }
             } else if (uiState.ingredients.isNotEmpty()) {
-                RecipeDetailsContent(uiState = uiState)
+                RecipeDetailsContent(uiState = uiState, painter = painter)
             } else {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = "No Recipe Details Found")
+                    Text(text = stringResource(R.string.no_recipe_details_found))
                 }
             }
         }
@@ -113,7 +160,7 @@ private fun RecipeDetailsUI(
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun RecipeDetailsContent(uiState: RecipeDetailsState) {
+fun RecipeDetailsContent(uiState: RecipeDetailsState, painter: AsyncImagePainter) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -121,9 +168,7 @@ fun RecipeDetailsContent(uiState: RecipeDetailsState) {
     ) {
         LazyColumn {
             item {
-                RecipeRow(
-                    Recipe(image = uiState.image, title = uiState.title)
-                )
+                RecipeRow(title = uiState.name, painter = painter )
                 Spacer(modifier = Modifier.height(15.dp))
             }
             item {
@@ -132,14 +177,18 @@ fun RecipeDetailsContent(uiState: RecipeDetailsState) {
                         horizontal = 10.dp,
                         vertical = 10.dp
                     ),
-                    text = "Ingredients",
+                    text = stringResource(R.string.ingredients),
                     fontSize = TextUnit(6f, TextUnitType.Em),
                     style = TextStyle(fontFamily = FontFamily.SansSerif),
                     fontWeight = FontWeight.Bold
                 )
             }
             items(uiState.ingredients.size) {
-                IngredientsItem(ingredient = uiState.ingredients[it])
+                val item = uiState.ingredients[it]
+                IngredientsItem(
+                    nameClean = item.nameClean ?: return@items,
+                    originalName = item.originalName ?: return@items
+                )
             }
             item {
                 Spacer(modifier = Modifier.height(100.dp))

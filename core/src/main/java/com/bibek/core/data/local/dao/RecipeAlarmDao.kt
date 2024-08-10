@@ -5,6 +5,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.bibek.core.data.local.model.recipe_alarm_entity.RecipeAlarmEntity
+import kotlinx.coroutines.flow.Flow
+
 
 @Dao
 interface RecipeAlarmDao {
@@ -13,10 +15,13 @@ interface RecipeAlarmDao {
     suspend fun insertRecipeAlarm(recipeEntities: RecipeAlarmEntity)
 
     @Query("SELECT * FROM Recipe_Alarm_Table")
-    suspend fun getAllRecipeAlarm() : List<RecipeAlarmEntity>
+    fun getAllRecipeAlarm() : Flow<List<RecipeAlarmEntity>>
 
     @Query("DELETE FROM Recipe_Alarm_Table")
     suspend fun deleteRecipeAlarmAll()
+
+    @Query("SELECT * FROM Recipe_Alarm_Table WHERE recipeId = :recipeId")
+    suspend fun getRecipeAlarmByRecipeId(recipeId: String): RecipeAlarmEntity?
 
     @Query("SELECT * FROM Recipe_Alarm_Table WHERE id = :id")
     suspend fun getRecipeAlarmById(id: Int): RecipeAlarmEntity?

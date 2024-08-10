@@ -1,28 +1,24 @@
 package com.bibek.dashboard.presentation.ui.home
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.DrawerValue
-import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -31,10 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.bibek.core.ui.color.theme.ColorBackground
+import com.bibek.dashboard.R
 import com.bibek.dashboard.domain.model.search.response.Recipe
 import com.bibek.dashboard.presentation.ui.components.RecipeRow
 import com.bibek.dashboard.presentation.ui.components.SearchTopBar
-import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
@@ -48,65 +45,56 @@ fun HomeScreen(
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun HomeUI(query: String, recipeList: LazyPagingItems<Recipe>, onEvent: (HomeEvent) -> Unit) {
-    val scope = rememberCoroutineScope()
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(ColorBackground),
         topBar = {
             Text(
-                text = "Find Best Recipe \nFor Cooking",
+                text = stringResource(R.string.find_best_recipe_for_cooking),
                 fontSize = TextUnit(7f, TextUnitType.Em),
                 fontWeight = FontWeight.ExtraBold,
-                modifier = Modifier.padding(
-                    horizontal = 20.dp,
-                    vertical = 10.dp
-                )
+                modifier = Modifier
+                    .background(ColorBackground)
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 20.dp,
+                        vertical = 10.dp
+                    )
+
             )
         },
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(ColorBackground)
                 .padding(it),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-            SearchTopBar(query, onEvent, navigationIcon = {
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    modifier = Modifier
-                        .clickable {
-                            scope.launch {
-                                drawerState.open()
-                            }
-                        }
-                        .padding(horizontal = 20.dp)
-                        .size(30.dp),
-                    contentDescription = null
-                )
-            })
+            SearchTopBar(query, onEvent)
             if (recipeList.loadState.refresh is LoadState.Loading) {
                 CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally), color = Color.Black
                 )
             } else if (recipeList.itemCount == 0) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = "No Recipe Available")
+                    Text(text = stringResource(R.string.no_recipe_available))
                 }
             } else {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 20.dp)
-                        .padding(top = 20.dp),
+                        ,
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Top
                 ) {
                     items(recipeList.itemCount) { index ->
                         val recipe = recipeList[index]
                         if (recipe != null) {
-                            RecipeRow(recipe = recipe, onItemClick = {
+                            RecipeRow(recipe = recipe, height = 300.dp, onItemClick = {
                                 onEvent(HomeEvent.NavigateToRecipeDetails(recipe.id.toString()))
                             })
                         }
@@ -114,7 +102,7 @@ fun HomeUI(query: String, recipeList: LazyPagingItems<Recipe>, onEvent: (HomeEve
                     }
                     item {
                         if (recipeList.loadState.append is LoadState.Loading) {
-                            CircularProgressIndicator()
+                            CircularProgressIndicator(color = Color.Black)
                         }
                     }
                 }
@@ -126,7 +114,7 @@ fun HomeUI(query: String, recipeList: LazyPagingItems<Recipe>, onEvent: (HomeEve
 
 @Preview(showSystemUi = true)
 @Composable
-fun HomeUiPreview(modifier: Modifier = Modifier) {
+fun HomeUiPreview() {
     HomeScreen(uiState = HomeState())
 }
 

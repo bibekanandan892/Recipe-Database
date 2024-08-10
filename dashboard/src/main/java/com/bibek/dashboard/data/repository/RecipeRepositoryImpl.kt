@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.bibek.core.data.local.dao.RecipeAlarmDao
 import com.bibek.core.data.local.model.recipe_alarm_entity.RecipeAlarmEntity
+import com.bibek.core.utils.PAGE_SIZE
 import com.bibek.core.utils.connectivity.ConnectivityObserver
 import com.bibek.core.utils.network.NetworkResult
 import com.bibek.core.utils.network.handleResponse
@@ -17,7 +18,6 @@ import com.bibek.dashboard.data.remote.model.query.Query
 import com.bibek.dashboard.data.remote.model.recipe_details.RecipeDetailsDto
 import com.bibek.dashboard.domain.model.search.response.Recipe
 import com.bibek.dashboard.domain.repository.RecipeRepository
-import com.bibek.dashboard.utils.PAGE_SIZE
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import kotlinx.coroutines.flow.Flow
@@ -61,7 +61,7 @@ class RecipeRepositoryImpl(
     }
 
     override suspend fun saveRecipeAlarm(recipeAlarmEntity: RecipeAlarmEntity) {
-        recipeAlarmDao.insertRecipeAlarm(recipeAlarmEntity)
+         recipeAlarmDao.insertRecipeAlarm(recipeAlarmEntity)
     }
 
 }

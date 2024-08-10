@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.bibek.core.utils.Toaster
@@ -21,7 +21,8 @@ import com.bibek.core.utils.navigation.Navigator
 import com.bibek.recipedatabase.navigation.SetupNavGraph
 import com.bibek.recipedatabase.presentation.componets.ConnectivityStatus
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,12 +35,18 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        toasterSetup()
+
         setContent {
             val navGraphController = rememberNavController()
             val mainViewModel: MainViewModel = hiltViewModel()
             val isConnectivityAvailable by mainViewModel.isConnectivityAvailable
-            NavigationSetup(navGraphController)
-            ToasterSetup()
+
+            LaunchedEffect(key1 = true) {
+                navigationSetup(navGraphController)
+            }
+
             Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                 Column(
                     modifier = Modifier
@@ -55,42 +62,33 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
-
         }
     }
 
-    @Composable
-    private fun ToasterSetup() {
-        LaunchedEffect(key1 = true) {
-            toaster.errorFlow.collect {
-                Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
-            }
-        }
-        LaunchedEffect(key1 = true) {
-            toaster.successFlow.collectLatest {
-                Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    @Composable
-    private fun NavigationSetup(navGraphController: NavHostController) {
-        LaunchedEffect(key1 = true) {
-            navigator.actions.collectLatest { action ->
-                when (action) {
-                    Navigator.Action.Back -> {
-                        navGraphController.popBackStack()
-                    }
-
-                    is Navigator.Action.Navigate -> {
-                        if (navGraphController.currentDestination?.route != action.destination) {
-                            navGraphController.navigate(
-                                route = action.destination, builder = action.navOptions
-                            )
-                        }
+    private fun navigationSetup(navGraphController: NavHostController) {
+        navigator.actions.onEach { action ->
+            when (action) {
+                Navigator.Action.Back -> {
+                    navGraphController.popBackStack()
+                }
+                is Navigator.Action.Navigate -> {
+                    if (navGraphController.currentDestination?.route != action.destination) {
+                        navGraphController.navigate(
+                            route = action.destination, builder = action.navOptions
+                        )
                     }
                 }
             }
-        }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun toasterSetup() {
+        toaster.errorFlow.onEach {
+            Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
+        }.launchIn(lifecycleScope)
+        toaster.successFlow.onEach {
+            Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
+        }.launchIn(lifecycleScope)
     }
 }
+
