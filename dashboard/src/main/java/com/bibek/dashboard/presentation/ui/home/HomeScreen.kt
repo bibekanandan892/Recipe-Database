@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -27,6 +28,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.bibek.core.ui.color.theme.ColorBackground
+import com.bibek.dashboard.R
 import com.bibek.dashboard.domain.model.search.response.Recipe
 import com.bibek.dashboard.presentation.ui.components.RecipeRow
 import com.bibek.dashboard.presentation.ui.components.SearchTopBar
@@ -44,17 +46,21 @@ fun HomeScreen(
 @Composable
 fun HomeUI(query: String, recipeList: LazyPagingItems<Recipe>, onEvent: (HomeEvent) -> Unit) {
     Scaffold(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .background(ColorBackground),
         topBar = {
             Text(
-                text = "Find Best Recipe \nFor Cooking",
+                text = stringResource(R.string.find_best_recipe_for_cooking),
                 fontSize = TextUnit(7f, TextUnitType.Em),
                 fontWeight = FontWeight.ExtraBold,
-                modifier = Modifier  .background(ColorBackground).fillMaxWidth().padding(
-                    horizontal = 20.dp,
-                    vertical = 10.dp
-                )
+                modifier = Modifier
+                    .background(ColorBackground)
+                    .fillMaxWidth()
+                    .padding(
+                        horizontal = 20.dp,
+                        vertical = 10.dp
+                    )
 
             )
         },
@@ -74,7 +80,7 @@ fun HomeUI(query: String, recipeList: LazyPagingItems<Recipe>, onEvent: (HomeEve
                 )
             } else if (recipeList.itemCount == 0) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = "No Recipe Available")
+                    Text(text = stringResource(R.string.no_recipe_available))
                 }
             } else {
                 LazyColumn(
@@ -88,7 +94,7 @@ fun HomeUI(query: String, recipeList: LazyPagingItems<Recipe>, onEvent: (HomeEve
                     items(recipeList.itemCount) { index ->
                         val recipe = recipeList[index]
                         if (recipe != null) {
-                            RecipeRow(recipe = recipe, onItemClick = {
+                            RecipeRow(recipe = recipe, height = 300.dp, onItemClick = {
                                 onEvent(HomeEvent.NavigateToRecipeDetails(recipe.id.toString()))
                             })
                         }

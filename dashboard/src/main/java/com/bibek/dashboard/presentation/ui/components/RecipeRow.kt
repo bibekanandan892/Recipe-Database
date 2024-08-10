@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
@@ -43,6 +44,7 @@ import com.bibek.dashboard.domain.model.search.response.Recipe
 @Composable
 fun RecipeRow(
     recipe: Recipe,
+    height : Dp = 300.dp,
     onItemClick: (Int) -> Unit = {},
     isLoadBitmap : Boolean = false,
     onImageLoaded: (Bitmap) -> Unit = {}
@@ -67,7 +69,7 @@ fun RecipeRow(
         ) {
             Box(
                 modifier = Modifier
-                    .height(450.dp),
+                    .height(height),
                 contentAlignment = Alignment.BottomStart,
             ) {
                 Image(
@@ -104,7 +106,7 @@ fun RecipeRow(
                             fontStyle = FontStyle.Normal,
                             fontWeight = FontWeight.SemiBold,
                             color = Color.White,
-                            fontSize = TextUnit(6f,TextUnitType.Em),
+                            fontSize = TextUnit(4f,TextUnitType.Em),
                             modifier = Modifier.padding(start = 10.dp)
                         )
                         Spacer(modifier = Modifier.height(20.dp))
@@ -190,5 +192,5 @@ fun RecipeRow(
 @Preview(showSystemUi = true)
 @Composable
 fun RecipeRowUI() {
-    RecipeRow(recipe = Recipe(title = "long time coming"))
+    RecipeRow(recipe = Recipe(title = stringResource(R.string.long_time_coming)))
 }

@@ -16,6 +16,7 @@ class Toaster @Inject constructor() {
     suspend fun success(message: String) {
         _successFlow.emit(message)
     }
+
     suspend fun error(message: String) {
         _errorFlow.emit(message)
     }

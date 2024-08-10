@@ -120,6 +120,6 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
 
     implementation(libs.maxkeppeler.sheets.compose.dialogs.core)
-    implementation(libs.maxkeppeler.sheets.compose.dialogs.clock)
+    implementation(libs.maxkeppeler.sheets.compose.dialogs.date.time)
 
 }

@@ -2,7 +2,6 @@ package com.bibek.planner.presentation.ui.schedule_recipe_alarm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bibek.core.utils.Toaster
 import com.bibek.core.utils.navigation.Destination
 import com.bibek.core.utils.navigation.Navigator
 import com.bibek.planner.domain.usecase.GetRecipeAlarmListUseCase
@@ -17,8 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ScheduleRecipeAlarmViewModel @Inject constructor(
-    private val getRecipeAlarmListUseCase: GetRecipeAlarmListUseCase,
-    private val toaster: Toaster,
+    getRecipeAlarmListUseCase: GetRecipeAlarmListUseCase,
     private val navigator: Navigator,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ScheduleRecipeAlarmState())

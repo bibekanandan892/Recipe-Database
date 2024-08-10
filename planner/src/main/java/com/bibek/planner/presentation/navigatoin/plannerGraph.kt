@@ -9,6 +9,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
+import com.bibek.core.utils.DEEP_LINK_BASE_URI
+import com.bibek.core.utils.RECIPE_ID
 import com.bibek.core.utils.navigation.Destination
 import com.bibek.planner.presentation.ui.recipe_alarm_details_screen.RecipeAlarmDetailsEvent
 import com.bibek.planner.presentation.ui.recipe_alarm_details_screen.RecipeAlarmDetailsScreen
@@ -23,19 +25,19 @@ fun NavGraphBuilder.plannerGraph() {
         ScheduleRecipeScreen(uiState = uiState, onEvent = scheduleRecipeAlarmViewModel::onEvent)
     }
     composable(
-        route = Destination.RECIPE_ALARM_DETAILS.name + "/{recipeId}",
-        arguments = listOf(navArgument("recipeId") { type = NavType.StringType }),
+        route = Destination.RECIPE_ALARM_DETAILS.name + "/{$RECIPE_ID}",
+        arguments = listOf(navArgument(RECIPE_ID) { type = NavType.StringType }),
         deepLinks = listOf(navDeepLink {
-            uriPattern = "app://com.bibek.recipedatabase/${Destination.RECIPE_ALARM_DETAILS.name}/{recipeId}"
+            uriPattern = "$DEEP_LINK_BASE_URI${Destination.RECIPE_ALARM_DETAILS.name}/{$RECIPE_ID}"
         })
     ) { backStackEntry ->
-        val recipeId = backStackEntry.arguments?.getString("recipeId").toString()
+        val recipeId = backStackEntry.arguments?.getString(RECIPE_ID).toString()
         val recipeAlarmDetailsViewModel: RecipeAlarmDetailsViewModel = hiltViewModel()
         val uiState by recipeAlarmDetailsViewModel.uiState.collectAsState()
         LaunchedEffect(key1 = true) {
             recipeAlarmDetailsViewModel.onEvent(RecipeAlarmDetailsEvent.GetRecipeAlarm(recipeId = recipeId))
         }
-        RecipeAlarmDetailsScreen(uiState = uiState)
+        RecipeAlarmDetailsScreen(uiState = uiState,onEvent = recipeAlarmDetailsViewModel::onEvent)
     }
 
 

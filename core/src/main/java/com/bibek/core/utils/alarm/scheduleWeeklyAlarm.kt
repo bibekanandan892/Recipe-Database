@@ -22,6 +22,8 @@ fun scheduleWeeklyAlarm(
     minute: Int,
     isRepeat : Boolean,
     recipeId: String,
+    isBroadCast : Boolean = false,
+    alarmSchedule: () -> Unit = {}
 ) {
     val alarmManager: AlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val intent = Intent(context, AlarmReceiver::class.java).apply {
@@ -50,6 +52,7 @@ fun scheduleWeeklyAlarm(
             calendar.timeInMillis,
             pendingIntent
         )
+        alarmSchedule.invoke()
     } catch (e: SecurityException) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (!checkExactAlarmPermission(context)) {

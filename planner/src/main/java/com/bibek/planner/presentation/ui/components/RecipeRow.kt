@@ -24,18 +24,19 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import com.bibek.planner.R
 
 @ExperimentalAnimationApi
 @Composable
 fun RecipeCard(
     image: Bitmap,
     title: String
-
 ) {
     Card(
         modifier = Modifier
@@ -52,7 +53,7 @@ fun RecipeCard(
             ) {
                 Image(
                     bitmap = image.asImageBitmap(),
-                    contentDescription = "Recipe Image",
+                    contentDescription = stringResource(R.string.recipe_image),
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(15.dp)),
@@ -80,8 +81,6 @@ fun RecipeCard(
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                     }
-
-
                 }
             }
         }

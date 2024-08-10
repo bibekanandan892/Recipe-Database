@@ -109,9 +109,7 @@ dependencies {
 
     implementation(libs.room.paging)
     androidTestImplementation(libs.room.testing)
-
-    val work_version = "2.9.0"
-    // Kotlin + coroutines
-    implementation("androidx.work:work-runtime-ktx:$work_version")
+    // kotlin + coroutines
+    implementation(libs.androidx.work.runtime.ktx)
 
 }

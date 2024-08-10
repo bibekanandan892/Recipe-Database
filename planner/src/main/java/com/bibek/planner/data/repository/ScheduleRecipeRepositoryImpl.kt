@@ -10,12 +10,9 @@ import kotlinx.coroutines.flow.map
 class ScheduleRecipeRepositoryImpl(
     private val recipeAlarmDao: RecipeAlarmDao,
 ) : ScheduleRecipeRepository {
-    override fun getRecipeAlarmList(
-
-    ): Flow<List<RecipeAlarm>> {
-        return recipeAlarmDao.getAllRecipeAlarm().map { it.map{item -> item.toDomain()} }
+    override fun getRecipeAlarmList(): Flow<List<RecipeAlarm>> {
+        return recipeAlarmDao.getAllRecipeAlarm().map { it.map { item -> item.toDomain() } }
     }
-
     override suspend fun getRecipeItem(recipeId: String): RecipeAlarm? {
         return recipeAlarmDao.getRecipeAlarmByRecipeId(recipeId = recipeId)?.toDomain()
     }

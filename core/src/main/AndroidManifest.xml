@@ -8,7 +8,6 @@
     <application>
 
         <receiver android:name="com.bibek.core.broadcast.AlarmReceiver"
-            android:exported="true"
             android:enabled="true">
         </receiver>
     </application>

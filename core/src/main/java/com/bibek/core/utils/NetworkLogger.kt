@@ -8,11 +8,12 @@ import java.util.Date
 import java.util.Locale
 
 class NetworkLogger : Logger {
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.getDefault())
+    private val dateFormat = SimpleDateFormat(DATE_FORMAT_PATTERN, Locale.getDefault())
+
     override fun log(message: String) {
         if (BuildConfig.DEBUG) {
             val timestamp = dateFormat.format(Date())
-            Log.d("Ktor Client", "[$timestamp] $message")
+            Log.d(LOG_TAG, "[$timestamp] $message")
         }
     }
 }

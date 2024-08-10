@@ -4,6 +4,10 @@ import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bibek.core.data.local.model.recipe_alarm_entity.RecipeAlarmEntity
+import com.bibek.core.utils.DEFAULT_IMAGE
+import com.bibek.core.utils.DEFAULT_NAME
+import com.bibek.core.utils.DETAILS_PREFIX
+import com.bibek.core.utils.NAME_PREFIX
 import com.bibek.core.utils.Toaster
 import com.bibek.core.utils.formatTo12Hour
 import com.bibek.core.utils.navigation.Navigator
@@ -18,6 +22,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class RecipeDetailsViewModel @Inject constructor(
@@ -74,7 +79,7 @@ class RecipeDetailsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun setRecipeAlarm(image: Bitmap,alarmId : Int) {
+    private suspend fun setRecipeAlarm(image: Bitmap, alarmId: Int) {
         saveRecipeAlarmUseCase.invoke(
             recipeAlarmEntity = RecipeAlarmEntity(
                 id = alarmId,
@@ -93,15 +98,17 @@ class RecipeDetailsViewModel @Inject constructor(
     private suspend fun getRecipeDetails(recipeId: String) {
         getRecipeDetailsUseCase.invoke(recipeId = recipeId).collectResponse(onSuccess = {
             _uiState.update { uiState ->
-                uiState.copy(id = it?.id,
-                    name = it?.title ?: "NA",
-                    image = it?.image ?: "NA",
+                uiState.copy(
+                    id = it?.id,
+                    name = it?.title ?: DEFAULT_NAME,
+                    image = it?.image ?: DEFAULT_IMAGE,
                     ingredients = it?.extendedIngredients?.filterNotNull()?.map {
                         it.copy(
-                            nameClean = "Name : ${it.nameClean}",
-                            originalName = "Details : ${it.originalName}"
+                            nameClean = "$NAME_PREFIX${it.nameClean}",
+                            originalName = "$DETAILS_PREFIX${it.originalName}"
                         )
-                    } ?: listOf())
+                    } ?: listOf()
+                )
             }
         }, onLoading = {
             _uiState.update { uiState -> uiState.copy(isRecipeDetailsLoading = it) }

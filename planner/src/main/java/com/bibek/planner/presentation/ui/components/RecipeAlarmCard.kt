@@ -26,12 +26,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bibek.planner.R
 
 @Composable
 fun RecipeAlarmCard(
@@ -57,7 +58,8 @@ fun RecipeAlarmCard(
                 contentDescription = recipeName,
                 modifier = Modifier
                     .size(80.dp)
-                    .clip(RoundedCornerShape(12.dp)).weight(0.3f),
+                    .clip(RoundedCornerShape(12.dp))
+                    .weight(0.3f),
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.width(16.dp))
@@ -79,14 +81,8 @@ fun RecipeAlarmCard(
             }
             IconButton(onClick = {
             }, modifier = Modifier.weight(0.1f)) {
-                Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
+                Icon(imageVector = Icons.Default.Delete, contentDescription = stringResource(R.string.delete))
             }
         }
     }
-}
-
-@Composable
-@Preview
-fun PreviewAvocadoWithNutsCard() {
-
 }

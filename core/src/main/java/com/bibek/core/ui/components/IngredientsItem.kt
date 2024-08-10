@@ -30,10 +30,10 @@ fun IngredientsItem(
             Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp)) {
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = nameClean.toString(),
+                    text = nameClean,
                     style = TextStyle(fontWeight = FontWeight.Bold)
                 )
-                Text(text = originalName.toString())
+                Text(text = originalName)
                 Spacer(modifier = Modifier.height(10.dp))
             }
         }

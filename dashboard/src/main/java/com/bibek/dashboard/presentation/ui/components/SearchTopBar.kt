@@ -24,11 +24,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.bibek.core.ui.color.theme.ColorBackground
 import com.bibek.core.ui.color.theme.ColorTextFieldContainerDefault
 import com.bibek.core.ui.color.theme.ColorTextFieldText
 import com.bibek.core.ui.color.theme.ColorTextTitle
+import com.bibek.dashboard.R
 import com.bibek.dashboard.presentation.ui.home.HomeEvent
 
 @Composable
@@ -58,7 +60,7 @@ fun SearchTopBar(
             onClick = { onEvent(HomeEvent.NavigateToScheduleRecipe) },
             modifier = Modifier.weight(0.1f)
         ) {
-            Icon(imageVector = Icons.Default.DateRange, contentDescription = "Remainder")
+            Icon(imageVector = Icons.Default.DateRange, contentDescription = stringResource(R.string.remainder))
         }
     }
 }
@@ -85,11 +87,11 @@ private fun SearchBar(
                 Icon(
                     modifier = Modifier.padding(horizontal = 10.dp),
                     imageVector = Icons.Default.Search,
-                    contentDescription = "Search", tint = ColorTextTitle
+                    contentDescription = stringResource(id = R.string.search), tint = ColorTextTitle
                 )
             },
             placeholder = {
-                Text(text = "Search...")
+                Text(text = stringResource(id = R.string.search))
             },
             shape = RoundedCornerShape(20.dp),
             colors = TextFieldDefaults.textFieldColors(
@@ -110,7 +112,7 @@ private fun SearchBar(
                                 keyboardController?.hide()
                             },
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Search",
+                        contentDescription = stringResource(id = R.string.search),
                         tint = Color.White
                     )
                 }

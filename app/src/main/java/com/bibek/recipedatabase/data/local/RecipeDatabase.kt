@@ -9,9 +9,6 @@ import com.bibek.core.utils.type_converter.type.BitmapTypeConverter
 import com.bibek.core.utils.type_converter.type.IngredientListConverter
 import com.bibek.dashboard.data.local.RecipeDao
 import com.bibek.dashboard.data.local.model.search.RecipeEntity
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 
 
 @Database(entities = [RecipeEntity::class,RecipeAlarmEntity::class], version = 2, exportSchema = false)

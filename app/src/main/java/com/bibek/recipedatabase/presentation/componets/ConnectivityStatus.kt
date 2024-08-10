@@ -45,7 +45,6 @@ fun ConnectivityStatus(connectionState: ConnectionState) {
                 delay(2000)
                 false
             }
-
             ConnectionState.Unavailable -> true
         }
     }
@@ -54,7 +53,7 @@ fun ConnectivityStatus(connectionState: ConnectionState) {
 @Composable
 fun ConnectivityStatusBox(connectionState: ConnectionState) {
     val isConnected = if (connectionState is ConnectionState.Available) Color.Green else Color.Red
-    val backgroundColor by animateColorAsState(isConnected)
+    val backgroundColor by animateColorAsState(isConnected, label = "")
     val message = when (connectionState) {
         ConnectionState.Available -> {
             "Back Online!"

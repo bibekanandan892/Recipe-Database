@@ -25,10 +25,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bibek.core.utils.Day
+import com.bibek.dashboard.R
 
 @Composable
 fun ReminderContent(
@@ -36,17 +38,17 @@ fun ReminderContent(
     onTimeSelect: (Int, Int) -> Unit,
     onSaveClick: () -> Unit = {},
     onDayClick: (Day) -> Unit = {},
-    onTimeClick : ()-> Unit = {},
-    onCloseSheet : ()-> Unit = {},
+    onTimeClick: () -> Unit = {},
+    onCloseSheet: () -> Unit = {},
     isShowClock: Boolean,
     selectedDay: Day? = null,
     selectedTime: String
 ) {
     if (isShowClock) {
-        ClockDialog(closeSelection =  {
+        ClockDialog(closeSelection = {
             closeSelection()
-        }, onTimeSelect = {hour, min->
-            onTimeSelect(hour,min)
+        }, onTimeSelect = { hour, min ->
+            onTimeSelect(hour, min)
         })
     }
     Column(
@@ -57,18 +59,26 @@ fun ReminderContent(
             .padding(16.dp)
     ) {
         TopAppBar(
-            title = { Text("Select Time", color = Color.White) },
+            title = { Text(text = stringResource(R.string.select_time), color = Color.White) },
             backgroundColor = Color.Transparent,
             elevation = 0.dp,
             navigationIcon = {
                 IconButton(onClick = onCloseSheet) {
-                    Icon(Icons.Default.Close, contentDescription = "Back", tint = Color.White)
+                    Icon(
+                        Icons.Default.Close,
+                        contentDescription = stringResource(R.string.back),
+                        tint = Color.White
+                    )
                 }
             },
             actions = {
                 selectedDay?.let {
                     IconButton(onClick = { onSaveClick.invoke() }) {
-                        Icon(Icons.Default.Check, contentDescription = "Save", tint = Color.White)
+                        Icon(
+                            Icons.Default.Check,
+                            contentDescription = stringResource(R.string.save),
+                            tint = Color.White
+                        )
                     }
                 }
             }
@@ -79,7 +89,9 @@ fun ReminderContent(
             text = selectedTime,
             fontSize = 64.sp,
             color = Color.White,
-            modifier = Modifier.align(Alignment.CenterHorizontally).clickable(onClick = onTimeClick)
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .clickable(onClick = onTimeClick)
         )
         Spacer(modifier = Modifier.height(8.dp))
         // Schedule Switch
@@ -88,7 +100,7 @@ fun ReminderContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Select Day", color = Color.Gray)
+            Text(text = stringResource(R.string.select_day), color = Color.Gray)
         }
         Spacer(modifier = Modifier.height(16.dp))
         // Days of the Week
@@ -120,6 +132,10 @@ fun DayCircle(day: Day, isSelected: Boolean, onClick: () -> Unit) {
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
-        Text(text = day.name.first().toString(), color = textColor, fontWeight = FontWeight.SemiBold)
+        Text(
+            text = day.name.first().toString(),
+            color = textColor,
+            fontWeight = FontWeight.SemiBold
+        )
     }
 }

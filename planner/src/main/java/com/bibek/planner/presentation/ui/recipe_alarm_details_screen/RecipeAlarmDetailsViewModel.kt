@@ -2,6 +2,7 @@ package com.bibek.planner.presentation.ui.recipe_alarm_details_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bibek.core.utils.GENERIC_ERROR_MESSAGE
 import com.bibek.core.utils.Toaster
 import com.bibek.core.utils.navigation.Navigator
 import com.bibek.planner.domain.usecase.GetRecipeAlarmItemUseCase
@@ -29,8 +30,6 @@ class RecipeAlarmDetailsViewModel @Inject constructor(
             }
         }
     }
-
-
     private suspend fun getRecipeDetails(recipeId: String) {
         val recipeAlarmItem = getRecipeAlarmItemUseCase.invoke(recipeId = recipeId)
         recipeAlarmItem?.let {
@@ -49,7 +48,7 @@ class RecipeAlarmDetailsViewModel @Inject constructor(
                     name = "", ingredients = listOf()
                 )
             }
-            toaster.error("Something went wrong")
+            toaster.error(GENERIC_ERROR_MESSAGE)
         }
     }
 }

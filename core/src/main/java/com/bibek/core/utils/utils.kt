@@ -1,7 +1,7 @@
 package com.bibek.core.utils
 
 fun formatTo12Hour(hours: Int, minutes: Int): String {
-    val period = if (hours < 12) "AM" else "PM"
+    val period = if (hours < 12) AM else PM
     val hourIn12Format = when {
         hours == 0 -> 12  // Midnight case
         hours > 12 -> hours - 12

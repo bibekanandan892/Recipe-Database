@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -35,6 +36,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.bibek.core.ui.components.IngredientsItem
 import com.bibek.core.ui.components.TopBar
 import com.bibek.core.utils.alarm.scheduleWeeklyAlarm
+import com.bibek.dashboard.R
 import com.bibek.dashboard.presentation.ui.components.Button
 import com.bibek.dashboard.presentation.ui.components.RecipeRow
 import com.bibek.dashboard.presentation.ui.components.ReminderContent
@@ -54,6 +56,7 @@ fun RecipeDetailsScreen(
         initialValue = ModalBottomSheetValue.Hidden
     )
     val painter = rememberAsyncImagePainter(uiState.image)
+
     ModalBottomSheetLayout(sheetShape = RoundedCornerShape(
         topEnd = 20.dp,
         topStart = 20.dp
@@ -71,12 +74,7 @@ fun RecipeDetailsScreen(
                         // Extract the bitmap from the painter's result
                         val imageBitmap = (painterState.result.drawable as BitmapDrawable).bitmap
                         val alarmId = UUID.randomUUID().hashCode()
-                        onEvent(
-                            RecipeDetailsEvent.SetRecipeAlarm(
-                                image = imageBitmap,
-                                alarmId = alarmId
-                            )
-                        )
+
                         scheduleWeeklyAlarm(
                             context = context,
                             alarmId = alarmId,
@@ -84,11 +82,20 @@ fun RecipeDetailsScreen(
                             hour = uiState.hour,
                             minute = uiState.minute,
                             recipeId = uiState.id.toString(),
-                            isRepeat = true
+                            isRepeat = true,
+                            alarmSchedule = {
+                                onEvent(
+                                    RecipeDetailsEvent.SetRecipeAlarm(
+                                        image = imageBitmap,
+                                        alarmId = alarmId
+                                    )
+                                )
+                                scope.launch {
+                                    bottomSheetState.hide()
+                                }
+                            }
                         )
-                        scope.launch {
-                            bottomSheetState.hide()
-                        }
+
                     }
                 }, onDayClick = {
                     onEvent(RecipeDetailsEvent.OnDaySelect(it))
@@ -123,11 +130,12 @@ private fun RecipeDetailsUI(
     Scaffold(modifier = Modifier
         .fillMaxSize()
         .padding(top = 10.dp), topBar = {
-        TopBar("Recipe Details",
+        TopBar(
+            title = stringResource(R.string.recipe_details),
             onBackClick = { onEvent(RecipeDetailsEvent.NavigateBack) })
     }, floatingActionButton = {
         if (uiState.name.isNotEmpty() && uiState.ingredients.isNotEmpty()) {
-            Button(title = "Add Recipe", onClick = onAddRecipeClick)
+            Button(title = stringResource(R.string.add_recipe), onClick = onAddRecipeClick)
         }
     }) {
         Column(
@@ -143,7 +151,7 @@ private fun RecipeDetailsUI(
                 RecipeDetailsContent(uiState = uiState, painter = painter)
             } else {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = "No Recipe Details Found")
+                    Text(text = stringResource(R.string.no_recipe_details_found))
                 }
             }
         }
@@ -169,7 +177,7 @@ fun RecipeDetailsContent(uiState: RecipeDetailsState, painter: AsyncImagePainter
                         horizontal = 10.dp,
                         vertical = 10.dp
                     ),
-                    text = "Ingredients",
+                    text = stringResource(R.string.ingredients),
                     fontSize = TextUnit(6f, TextUnitType.Em),
                     style = TextStyle(fontFamily = FontFamily.SansSerif),
                     fontWeight = FontWeight.Bold

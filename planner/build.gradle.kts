@@ -95,5 +95,5 @@ dependencies {
 
     //time picker
     implementation(libs.maxkeppeler.sheets.compose.dialogs.core)
-    implementation(libs.maxkeppeler.sheets.compose.dialogs.clock)
+    implementation(libs.maxkeppeler.sheets.compose.dialogs.date.time)
 }
