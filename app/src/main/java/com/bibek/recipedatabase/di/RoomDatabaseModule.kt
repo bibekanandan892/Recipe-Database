@@ -3,6 +3,7 @@ package com.bibek.recipedatabase.di
 import android.content.Context
 import androidx.room.Room
 import com.bibek.core.data.local.dao.RecipeAlarmDao
+import com.bibek.core.utils.RECIPE_DATABASE
 import com.bibek.dashboard.data.local.RecipeDao
 import com.bibek.recipedatabase.data.local.RecipeDatabase
 import dagger.Module
@@ -21,7 +22,7 @@ object RoomDatabaseModule {
         Room.databaseBuilder(
             context.applicationContext,
             RecipeDatabase::class.java,
-            "RECIPE_DATABASE"
+            RECIPE_DATABASE
         )
             .fallbackToDestructiveMigration()
             .build()

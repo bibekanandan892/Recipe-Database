@@ -3,6 +3,7 @@ package com.bibek.core.utils
 import android.content.Intent
 import java.util.Calendar
 
+const val RECIPE_DATABASE ="RECIPE_DATABASE"
 const val RECIPE_ID = "RECIPE_ID"
 const val IS_REPEAT = "IS_REPEAT"
 const val HOUR = "HOUR"
