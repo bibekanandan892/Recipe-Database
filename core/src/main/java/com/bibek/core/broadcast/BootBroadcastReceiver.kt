@@ -18,6 +18,7 @@ class BootBroadcastReceiver : BroadcastReceiver() {
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onReceive(context: Context?, intent: Intent?) {
+
         if (intent?.action == Intent.ACTION_BOOT_COMPLETED) {
             if (context == null) return
 
