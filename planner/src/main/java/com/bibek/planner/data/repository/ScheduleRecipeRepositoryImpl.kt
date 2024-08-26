@@ -16,4 +16,8 @@ class ScheduleRecipeRepositoryImpl(
     override suspend fun getRecipeItem(recipeId: String): RecipeAlarm? {
         return recipeAlarmDao.getRecipeAlarmByRecipeId(recipeId = recipeId)?.toDomain()
     }
+
+    override suspend fun deleteRecipeAlarmById(id: Int) {
+        recipeAlarmDao.deleteRecipeAlarmById(id)
+    }
 }

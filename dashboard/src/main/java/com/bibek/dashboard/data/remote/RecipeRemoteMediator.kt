@@ -27,9 +27,11 @@ class RecipeRemoteMediator(
     private val query: Query,
     private val connectivityObserver: ConnectivityObserver
 ) : PagingSource<Int, RecipeEntity>() {
+
     override fun getRefreshKey(state: PagingState<Int, RecipeEntity>): Int? {
         return state.anchorPosition
     }
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, RecipeEntity> {
         return try {
             val prev = params.key ?: 0

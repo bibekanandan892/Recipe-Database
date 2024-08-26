@@ -11,9 +11,11 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.bibek.core.ui.color.theme.ColorBackground
 import com.bibek.core.ui.components.TopBar
+import com.bibek.core.utils.alarm.cancelScheduledAlarm
 import com.bibek.planner.R
 import com.bibek.planner.presentation.ui.components.RecipeAlarmCard
 import com.bibek.planner.presentation.ui.components.WeekdaysRow
@@ -31,6 +33,7 @@ fun ScheduleRecipeUI(
     uiState: ScheduleRecipeAlarmState,
     onEvent: (ScheduleRecipeAlarmEvent) -> Unit
 ) {
+    val context = LocalContext.current
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -52,7 +55,7 @@ fun ScheduleRecipeUI(
             WeekdaysRow(selectedDay = uiState.selectedDay, onClick = { day ->
                 onEvent(ScheduleRecipeAlarmEvent.OnDaySelect(day))
             })
-            LazyColumn (modifier = Modifier.fillMaxSize()){
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
                 items(uiState.recipeAlarmList) { item ->
                     RecipeAlarmCard(
                         image = item.image ?: return@items,
@@ -60,6 +63,12 @@ fun ScheduleRecipeUI(
                         time = item.time,
                         onClick = {
                             onEvent(ScheduleRecipeAlarmEvent.NavigateToRecipeAlarmDetails(recipeId = item.recipeId))
+                        }, onDeletedClick = {
+                            cancelScheduledAlarm(
+                                alarmId = item.alarmId ?: return@RecipeAlarmCard,
+                                context = context
+                            )
+                            onEvent.invoke(ScheduleRecipeAlarmEvent.DeleteAlarm(item.alarmId))
                         }
                     )
                 }

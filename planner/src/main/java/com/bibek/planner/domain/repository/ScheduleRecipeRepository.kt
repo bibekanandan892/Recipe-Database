@@ -7,6 +7,9 @@ interface ScheduleRecipeRepository {
 
     fun getRecipeAlarmList():Flow<List<RecipeAlarm>>
     suspend fun getRecipeItem(recipeId :String):RecipeAlarm?
+
+    suspend fun deleteRecipeAlarmById(id: Int)
+
 }
 
 

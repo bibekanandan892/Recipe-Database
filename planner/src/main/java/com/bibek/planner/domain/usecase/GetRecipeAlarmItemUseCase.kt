@@ -9,5 +9,4 @@ class GetRecipeAlarmItemUseCase @Inject constructor(private val scheduleRecipeRe
     suspend operator fun invoke(recipeId : String): RecipeAlarm? {
         return scheduleRecipeRepository.getRecipeItem(recipeId)
     }
-
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bibek.core.utils.navigation.Destination
 import com.bibek.core.utils.navigation.Navigator
+import com.bibek.planner.domain.usecase.DeleteRecipeAlarmItemUseCase
 import com.bibek.planner.domain.usecase.GetRecipeAlarmListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ScheduleRecipeAlarmViewModel @Inject constructor(
     getRecipeAlarmListUseCase: GetRecipeAlarmListUseCase,
+    private val deleteRecipeAlarmItemUseCase: DeleteRecipeAlarmItemUseCase,
     private val navigator: Navigator,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ScheduleRecipeAlarmState())
@@ -47,6 +49,7 @@ class ScheduleRecipeAlarmViewModel @Inject constructor(
                         selectedDay = event.day
                     )
                 }
+                is ScheduleRecipeAlarmEvent.DeleteAlarm -> deleteRecipeAlarmItemUseCase.invoke(event.alarmId)
             }
         }
     }

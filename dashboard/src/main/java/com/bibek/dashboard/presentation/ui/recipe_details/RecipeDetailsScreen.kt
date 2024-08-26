@@ -74,7 +74,6 @@ fun RecipeDetailsScreen(
                         // Extract the bitmap from the painter's result
                         val imageBitmap = (painterState.result.drawable as BitmapDrawable).bitmap
                         val alarmId = UUID.randomUUID().hashCode()
-
                         scheduleWeeklyAlarm(
                             context = context,
                             alarmId = alarmId,

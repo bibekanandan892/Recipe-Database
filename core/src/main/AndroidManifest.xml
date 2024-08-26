@@ -10,6 +10,7 @@
         <receiver android:name="com.bibek.core.broadcast.AlarmReceiver"
             android:enabled="true">
         </receiver>
+
     </application>
 
 </manifest>

@@ -6,4 +6,6 @@ sealed interface ScheduleRecipeAlarmEvent {
     data class NavigateToRecipeAlarmDetails(val recipeId : String):ScheduleRecipeAlarmEvent
     data object NavigateBack : ScheduleRecipeAlarmEvent
     data class OnDaySelect(val day: Day) : ScheduleRecipeAlarmEvent
+
+    data class DeleteAlarm(val alarmId : Int) : ScheduleRecipeAlarmEvent
 }

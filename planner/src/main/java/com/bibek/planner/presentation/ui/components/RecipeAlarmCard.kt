@@ -39,7 +39,8 @@ fun RecipeAlarmCard(
     image: Bitmap,
     recipeName: String,
     time: String,
-    onClick : ()-> Unit
+    onClick : ()-> Unit,
+    onDeletedClick : () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -79,8 +80,7 @@ fun RecipeAlarmCard(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }
-            IconButton(onClick = {
-            }, modifier = Modifier.weight(0.1f)) {
+            IconButton(onClick = onDeletedClick, modifier = Modifier.weight(0.1f)) {
                 Icon(imageVector = Icons.Default.Delete, contentDescription = stringResource(R.string.delete))
             }
         }
