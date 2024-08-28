@@ -21,18 +21,15 @@ The Recipe Database and Meal Planning App is designed to help users discover new
 - Visualize meal plans with a calendar view.
 - Add, edit, and remove meals from the plan.
 
-### Shopping List
-- Generate shopping lists based on selected recipes.
-- Manually add or remove items from the shopping list.
-- Mark items as purchased and organize the list by store sections.
-
-### Favorites
-- Save favorite recipes for easy access.
-- Categorize and organize favorite recipes.
-
 ### Notifications and Reminders
 - Set reminders for meal prep, cooking times, and grocery shopping.
 - Receive notifications to stay on track with scheduled tasks.
+
+- **Recipe Management:** Add, edit, and delete recipes with detailed information.
+- **Pagination:** Efficiently handle large datasets with smooth scrolling.
+- **Offline Support:** Access and manage recipes even without an internet connection.
+- **Reminders:** Schedule and manage reminders for recipes using AlarmManager.
+- **Device Restart Handling:** Ensures reminders persist through device reboots.
 
 ## Implementation Plan
 
@@ -51,21 +48,6 @@ The Recipe Database and Meal Planning App is designed to help users discover new
 - Create a search feature that queries the Spoonacular API with user input.
 - Display search results and detailed recipe information.
 
-### Meal Planning
-- Design a calendar view to display meal plans.
-- Functionality to add, edit, and remove meals from the calendar.
-- Store meal plans in a local database using Room.
-
-### Shopping List
-- Generate a shopping list based on selected recipes.
-- Manually add or remove items from the list.
-- Functionality to mark items as purchased and organize the list by store sections.
-
-### Favorites
-- Feature to save and organize favorite recipes.
-- Store favorite recipes in a local database using Room.
-- UI elements to display and manage favorite recipes.
-
 ### Notifications and Reminders
 - Use WorkManager to schedule and manage notifications.
 - Functionality to set reminders for meal prep, cooking times, and grocery shopping.
@@ -82,8 +64,14 @@ The Recipe Database and Meal Planning App is designed to help users discover new
    ```sh
    git clone https://github.com/bibekanandan892/Recipe-Database.git
    ```
-2. Open the project in Android Studio.
-3. Add your Spoonacular API key to the project.
+2. **Open the Project:**
+   Open the project in [Android Studio](https://developer.android.com/studio).
+
+3. **Sync Gradle:**
+   Ensure all dependencies are up-to-date by syncing the Gradle files.
+
+4. **Run the Application:**
+   Connect an Android device or start an emulator and run the app from Android Studio.
 
 ### Usage
 - Build and run the app on an Android device or emulator.
@@ -91,7 +79,13 @@ The Recipe Database and Meal Planning App is designed to help users discover new
 
 ## Contributing
 
-Contributions are welcome! Please fork the repository and submit a pull request.
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes and commit them (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature-branch`).
+5. Open a pull request.
 
 ## License
 
