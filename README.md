@@ -1,11 +1,44 @@
 
 
 # Recipe Database and Meal Planning App
+## Preview
+
+<table>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/6346efe1-d70f-4564-9baf-76423d2555ca" /></td>
+    <td><img src="https://github.com/user-attachments/assets/a6bc4b52-aa52-4ccc-aab6-6441d2efdce6" /></td>
+  </tr>
+</table>
 
 ## Overview
 
 The Recipe Database and Meal Planning App is designed to help users discover new recipes, plan their meals, generate shopping lists, and stay organized with notifications and reminders. By integrating the Spoonacular API, this app provides a comprehensive and user-friendly experience with features such as search functionality, meal planning, shopping list generation, favorites, and notifications.
 
+### Project Structure
+
+<img src="https://github.com/user-attachments/assets/541eb101-079b-429a-8c1f-b1b6385fb53c" />
+
+
+* **Clean Architecture:** Utilizes the modern Android approach of building apps with Clean Architecture and MVVM.
+* **Offline-First Approach:** Caches data in Room DB when the internet connection is not available.
+* **Network Observer:** Continuously observes network state and handles network changes.
+* **Coil Image Loading:** Loads images using Coil, with or without loading animation.
+* **Lib Versions Catalog:** Manages dependencies and their versions using `lib.versions.toml`.
+
+## Built With
+
+* **Android Studio Koala:** IDE used for development.
+* **Kotlin:** Primary programming language.
+* **KSP:** Kotlin Symbol Processing API for Hilt.
+* **Jetpack Compose:** UI Toolkit for building native UIs.
+* **Jetpack Libraries:** Includes Lifecycle, ViewModel, Navigation Compose, etc.
+* **Hilt:** Dependency Injection framework.
+* **Coil:** Image loading library.
+* **Ktor Client:** Networking and API management.
+* **Kotlin Coroutines & Flow:** For asynchronous tasks and data management.
+* **Paging 3:** For efficient data paging and loading.
+* **Room DB:** For local database storage and caching.
+* **Alarm Manager:** Used Alarm Manager for scheduling notification of the recipe
 ## Features
 
 ### Fetch Recipes from Spoonacular API
